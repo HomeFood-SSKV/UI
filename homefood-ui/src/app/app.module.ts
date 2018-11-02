@@ -22,6 +22,7 @@ import { GetDetailsComponent } from './components/order/get-details/get-details.
 import { PaymentSelectionComponent } from './components/order/payment-selection/payment-selection.component';
 import { ConfirmationComponent } from './components/order/confirmation/confirmation.component';
 import { ComboHomeComponent } from './components/order/combo-home/combo-home.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +44,8 @@ import { ComboHomeComponent } from './components/order/combo-home/combo-home.com
     GetDetailsComponent,
     PaymentSelectionComponent,
     ConfirmationComponent,
-    ComboHomeComponent
+    ComboHomeComponent,
+    LandingPageComponent
   ],
   imports: [
     BrowserModule,

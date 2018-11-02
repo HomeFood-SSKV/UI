@@ -18,29 +18,17 @@ export class ApiService {
    }
 
   getData(getUrl: string): Observable<any> {
-    return this.http.get(getUrl);
+    return this.http.get(getUrl).pipe(
+      catchError(this.handleError<any>('get details:'))
+    );
   }
 
   postData (postUrl: string, data: any): Observable<any> {
     return this.http.post<any>(postUrl, data, httpOptions).pipe(
-      tap((product) => console.log(`added product w/ id=`)),
-      catchError(this.handleError<any>('addProduct'))
+      catchError(this.handleError<any>('post details :'))
     );
   }
 
-  // updateProduct (id, product): Observable<any> {
-  //   return this.http.put(endpoint + 'products/' + id, JSON.stringify(product), httpOptions).pipe(
-  //     tap(_ => console.log(`updated product id=${id}`)),
-  //     catchError(this.handleError<any>('updateProduct'))
-  //   );
-  // }
-
-  // deleteProduct (id): Observable<any> {
-  //   return this.http.delete<any>(endpoint + 'products/' + id, httpOptions).pipe(
-  //     tap(_ => console.log(`deleted product id=${id}`)),
-  //     catchError(this.handleError<any>('deleteProduct'))
-  //   );
-  // }
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 

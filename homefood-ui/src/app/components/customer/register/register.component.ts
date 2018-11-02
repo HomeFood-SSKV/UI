@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
             console.log(this.registerForm.value);
             // build request object and call API
             this.register = new Register();
-            this.register.firstName = this.registerForm.value.firstName;
+            this.register.fullName = this.registerForm.value.firstName;
             this.register.phoneNumber = this.registerForm.value.phoneNumber;
             this.register.emailId = this.registerForm.value.email;
             this.register.password = this.registerForm.value.password;
