@@ -1,43 +1,50 @@
-<p>
-  register works!
-</p>
-          <div >
+   <div >
               <h3>Registration</h3>
               <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                   <div class="form-group">
                       <label>First Name</label>
-                      <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
-                      <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-                          <div *ngIf="f.firstName.errors.required">First Name is required</div>
+                      <input type="text" formControlName="firstName" 
+                       class="form-control"
+                      (blur)="OnBlur('firstname',_register.firstName)"
+                       [ngClass]="{ 'is-invalid': submitted && _register.firstName.errors }" />
+                      <div *ngIf="((submitted && _register.firstName.errors) || !isFirstNameValid)" class="invalid-feedback">
+                          <div *ngIf="_register.firstName.errors && _register.firstName.errors.required">First Name is required</div>
+                          <div *ngIf="_register.firstName.errors?.pattern || !isFirstNameValid">First Name is invalid</div>
                       </div>
                   </div>
-                  <div class="form-group">
+                   <div class="form-group">
                       <label>Phone Number</label>
-                      <input type="text" formControlName="PhoneNumber" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PhoneNumber.errors }" />
-                      <div *ngIf="submitted && f.PhoneNumber.errors" class="invalid-feedback">
-                          <div *ngIf="f.PhoneNumber.errors.required">Phone Number is required</div>
+                      <input type="text" formControlName="PhoneNumber"
+                       class="form-control" 
+                       (blur)="OnBlur('mobilenumber',_register.PhoneNumber)"
+                       [ngClass]="{ 'is-invalid': submitted && _register.PhoneNumber.errors }" />
+                      <div *ngIf="((submitted && _register.PhoneNumber.errors) || !isMobileNumberValid)" class="invalid-feedback">
+                          <div *ngIf="_register.PhoneNumber.errors && _register.PhoneNumber.errors.required">Phone Number is required</div>
+                          <div *ngIf="_register.PhoneNumber.errors?.pattern || !isMobileNumberValid">Phone Number is invalid</div>
                       </div>
                   </div>
                   <div class="form-group">
                       <label>Email</label>
-                      <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-                      <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                          <div *ngIf="f.email.errors.required">Email is required</div>
-                          <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                      <input type="text" formControlName="email" 
+                      class="form-control"
+                       [ngClass]="{ 'is-invalid': submitted && _register.email.errors }" />
+                      <div *ngIf="submitted && _register.email.errors" class="invalid-feedback">
+                          <div *ngIf="_register.email.errors.required">Email is required</div>
+                          <div *ngIf="_register.email.errors.email">Please enter valid email address</div>
                       </div>
                   </div>
                   
                   <div class="form-group">
                       <label>Password</label>
-                      <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-                      <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                          <div *ngIf="f.password.errors.required">Password is required</div>
-                          <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                      <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && _register.password.errors }" />
+                      <div *ngIf="submitted && _register.password.errors" class="invalid-feedback">
+                          <div *ngIf="_register.password.errors.required">Password is required</div>
+                          <div *ngIf="_register.password.errors.minlength">Password must be at least 6 characters</div>
                       </div>
                   </div>
                   <p>
                     By creating this account, you agree to our <a href="http://www.tinmen.in/termsandconditions.html" target="_blank">Terms &amp; Conditions</a> &amp; <a href="http://www.tinmen.in/privacypolicy.html" target="_blank">Privacy Policy</a>
-                </p>
+                </p> 
                   <div class="form-group">
                       <button class="btn btn-primary">Register</button>
                   </div>
