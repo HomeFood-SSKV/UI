@@ -1,3 +1,12 @@
 <p>
-  location works!
+  Choose Area for Lunch 
 </p>
+<p>where do you want your lunch to be delivered?</p>
+<div *ngFor="let loc of locations">
+    <div>
+        <input type="radio" name="radiogroup" 
+            [checked]="loc.selected" 
+            [value]="loc.id" 
+            (change)="onSelectionChange(loc)">{{ loc.name }}
+    </div> 
+  </div>
