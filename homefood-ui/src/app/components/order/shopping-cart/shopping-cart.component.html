@@ -1,4 +1,10 @@
-<p>
+
   shopping-cart works!
-</p>
+  <div *ngIf="cartData.length > 0">
+      <div *ngFor="let product of cartData;let i = index;" >
+          <div>{{product.name}}</div>
+      </div>   
+      <div> Total Price : {{totalPrice}}</div> 
+  </div>
+
 <a href="javascript:void(0)" (click)="proceedToDetails()">Proceed</a>

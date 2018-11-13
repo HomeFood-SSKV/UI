@@ -1,4 +1,10 @@
-<p>
-  home works! 
-</p>
+<div>
+  <div *ngFor="let product of products;let i = index;" >
+    <div>{{product.name}}</div>
+    <div>{{product.imgUrl}}</div>
+    <div>{{product.price}}</div>
+    <div><input type="button" value="Add" (click)="addProduct(i);" /></div>
+  </div>
+</div>  
+<app-shopping-cart></app-shopping-cart>
 <a href="javascript:void(0)" (click)="updateToCart()">Go to Cart</a>

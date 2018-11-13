@@ -25,7 +25,8 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": ["src/assets/libs/jquery/jquery.min.js","src/assets/libs/jquery-validation/jquery.validate.min.js",
+              "src/assets/libs/bootstrap-4.0.0-dist/js/bootstrap.min.js","src/assets/libs/owlcarousel2/owl.carousel.min.js","src/assets/js/custom.js", "src/assets/js/login-register.js"]
           },
           "configurations": {
             "production": {

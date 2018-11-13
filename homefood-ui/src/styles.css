@@ -1,1 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('./assets/libs/bootstrap-4.0.0-dist/css/bootstrap.min.css');
+@import url('./assets/libs/icofont/css/icofont.css');
+@import url('./assets/libs/owlcarousel2/assets/owl.carousel.min.css');
+@import url('./assets/css/style.css');
