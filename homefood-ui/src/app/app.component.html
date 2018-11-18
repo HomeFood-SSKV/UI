@@ -1,1 +1,50 @@
+ <!--- Modal Windows  -->
+
+        <!--- Login/Sign Up Start -->
+        <div class="modal fade login" id="loginModal">
+                <div class="modal-dialog login animated">
+                    <div class="modal-content">
+                       
+                        <div class="modal-header">
+                            <h4 class="modal-title">Login</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+    
+                        <div class="modal-body"> 
+                            <div class="box">
+                                 <div class="content">
+                                    <div class="error"></div>
+                                    <div class="form loginBox">
+                                  <app-login></app-login> 
+                                    </div>
+                                 </div>
+                            </div>
+                            <div class="box">
+                                <div class="content registerBox" style="display:none;">
+                                <div class="form">
+                                    <app-register></app-register>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="modal-footer">
+                            <div class="forgot login-footer">
+                                <span>
+                                    Looking to 
+                                    <a href="javascript: showRegisterForm();">create an account</a>
+                                    ?
+                            </span>
+                            </div>
+                            <div class="forgot register-footer" style="display:none">
+                                 <span>Already have an account?</span>
+                                 <a href="javascript: showLoginForm();">Login</a>
+                            </div>
+                        </div> 
+    
+                  </div>
+                </div>
+            </div>
+            <!--- Login/Sign Up End -->    
+    
 <router-outlet></router-outlet>

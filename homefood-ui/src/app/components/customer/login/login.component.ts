@@ -25,6 +25,15 @@ export class LoginComponent implements OnInit {
   get f() {
     return this.loginForm.controls;
     }
+   shakeModal(){
+      $('#loginModal .modal-dialog').addClass('shake');
+               $('.error').addClass('alert alert-danger').html("Invalid email/password combination");
+               $('input[type="password"]').val('');
+               this.loginForm.value.password='';
+               setTimeout( function(){ 
+                  $('#loginModal .modal-dialog').removeClass('shake'); 
+      }, 1000 ); 
+  }
     onSubmit() {
       this.submitted = true;
       // stop here if form is invalid
@@ -40,7 +49,14 @@ export class LoginComponent implements OnInit {
        const geturl = 'https://www.googleapis.com/youtube/v3/channels?part=contentDetails&mine=true';
        this.apiService.getData(geturl).subscribe((response) => {
          console.log(response);
-         console.log('get');
+         if(response){
+          // Success 
+          console.log('login success');
+         }else {
+          // Failure
+          console.log('login fails');
+          this.shakeModal();
+         }
        });
       }
   }
