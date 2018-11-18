@@ -25,14 +25,14 @@ export class LoginComponent implements OnInit {
   get f() {
     return this.loginForm.controls;
     }
-   shakeModal(){
-      $('#loginModal .modal-dialog').addClass('shake');
-               $('.error').addClass('alert alert-danger').html("Invalid email/password combination");
-               $('input[type="password"]').val('');
-               this.loginForm.value.password='';
-               setTimeout( function(){ 
-                  $('#loginModal .modal-dialog').removeClass('shake'); 
-      }, 1000 ); 
+   clearPwd(){
+    this.loginForm.value.password='';
+      // $('#loginModal .modal-dialog').addClass('shake');
+      //          $('.error').addClass('alert alert-danger').html("Invalid email/password combination");
+      //          $('input[type="password"]').val('');         
+      //          setTimeout( function(){ 
+      //             $('#loginModal .modal-dialog').removeClass('shake'); 
+      // }, 1000 ); 
   }
     onSubmit() {
       this.submitted = true;
@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
          }else {
           // Failure
           console.log('login fails');
-          this.shakeModal();
+          this.clearPwd();
          }
        });
       }
