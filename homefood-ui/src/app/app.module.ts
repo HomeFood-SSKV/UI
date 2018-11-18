@@ -24,6 +24,8 @@ import { ConfirmationComponent } from './components/order/confirmation/confirmat
 import { ComboHomeComponent } from './components/order/combo-home/combo-home.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { AppRoutingModule } from './app-routing.module';
+import { HeaderComponent } from './components/common/header/header.component';
+import { FooterComponent } from './components/common/footer/footer.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +48,9 @@ import { AppRoutingModule } from './app-routing.module';
     PaymentSelectionComponent,
     ConfirmationComponent,
     ComboHomeComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
