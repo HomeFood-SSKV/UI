@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Login } from '../../../model/field-model';
 import { ApiService } from '../../../services/api.service';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,8 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted = false;
   private login: Login;
+  unInvalid: boolean ;
+  pwdInvalid: boolean;
   constructor(private formBuilder: FormBuilder,
     private apiService: ApiService) { }
 
@@ -25,37 +28,50 @@ export class LoginComponent implements OnInit {
   get f() {
     return this.loginForm.controls;
     }
-   clearPwd(){
-    this.loginForm.value.password='';
-      // $('#loginModal .modal-dialog').addClass('shake');
-      //          $('.error').addClass('alert alert-danger').html("Invalid email/password combination");
-      //          $('input[type="password"]').val('');         
-      //          setTimeout( function(){ 
-      //             $('#loginModal .modal-dialog').removeClass('shake'); 
-      // }, 1000 ); 
+   shake(errorMessage) {
+      $('#loginModal .modal-dialog').addClass('shake');
+               $('.error').addClass('alert alert-danger').html(errorMessage);
+              //  $('input[type="password"]').val('');
+              //  this.loginForm.value.password = '';
+               setTimeout( function() {
+                  $('#loginModal .modal-dialog').removeClass('shake');
+      }, 0 );
   }
     onSubmit() {
       this.submitted = true;
       // stop here if form is invalid
+      if (this.loginForm.value.loginId === '') {
+        this.unInvalid = true;
+      } else if (this.loginForm.value.password === '') {
+        this.pwdInvalid = true;
+      } else if (this.loginForm.value.loginId !== '') {
+        this.unInvalid = false;
+      } else if (this.loginForm.value.password !== '') {
+        this.pwdInvalid = false;
+      }
       if (this.loginForm.invalid) {
+        this.unInvalid = false;
+        this.pwdInvalid = false;
           return;
-      } else if (!this.loginForm.invalid) {
+      } else if (!this.loginForm.invalid &&  !this.unInvalid &&  !this.pwdInvalid) {
        console.log(this.loginForm.value);
        // build request object and call API
        this.login = new Login();
+       this.unInvalid = false;
+       this.pwdInvalid = false;
        this.login.loginId = this.loginForm.value.loginId;
        this.login.password = this.loginForm.value.password;
        console.log(this.login);
        const geturl = 'https://www.googleapis.com/youtube/v3/channels?part=contentDetails&mine=true';
        this.apiService.getData(geturl).subscribe((response) => {
          console.log(response);
-         if(response){
-          // Success 
+         if (response) {
+          // Success
           console.log('login success');
-         }else {
+         } else {
           // Failure
           console.log('login fails');
-          this.clearPwd();
+          this.shake('Invalid email/password combination');
          }
        });
       }

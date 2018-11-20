@@ -9,8 +9,8 @@
     [ngClass]="{ 'is-invalid': submitted && f.loginId.errors }"
     placeholder="Mobile No/Email"
     name="email" />
-    <div *ngIf="submitted && f.loginId.errors" class="invalid-feedback">
-        <div *ngIf="f.loginId.errors.required">Email is required</div>
+    <div *ngIf="submitted && (f.loginId.errors || unInvalid)" class="invalid-feedback">
+        <div *ngIf="f.loginId.errors && (f.loginId.errors.required || unInvalid)">MobileNo/Email is required</div>
      </div>
 </div>
 
@@ -22,9 +22,9 @@
       [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
       placeholder="Password"
       name="password"  />
-    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-        <div *ngIf="f.password.errors.required">Password is required</div>
-        <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+    <div *ngIf="submitted && (f.password.errors || pwdInvalid)" class="invalid-feedback">
+        <div *ngIf="f.password.errors && (f.password.errors.required || pwdInvalid)">Password is required</div>
+        <div *ngIf="f.password.errors && f.password.errors.minlength">Password must be at least 6 characters</div>
     </div>
 </div>
 <div class="form-group">

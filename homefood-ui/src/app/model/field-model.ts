@@ -7,6 +7,7 @@ export class Register {
     phoneNumber: number;
     emailId: string;
     password: string;
+    confirmPassword: string;
   }
 
   export class Login {

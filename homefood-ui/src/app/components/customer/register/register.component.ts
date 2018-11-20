@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit {
   private isEmailIdValid = true;
   private isMobileNumberValid = true;
   private isPasswordValid = true;
+  private isPasswordNotMatch;
   constructor(private formBuilder: FormBuilder,
    private apiService: ApiService) { }
 
@@ -33,7 +34,9 @@ export class RegisterComponent implements OnInit {
         Validators.pattern(this.mobilePattern)]],
       email: ['', [Validators.maxLength(100), Validators.email
         ]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      password_confirmation: ['', [Validators.required, Validators.minLength(6)]]
+
   });
   }
    // convenience getter for easy access to form fields
@@ -57,8 +60,23 @@ export class RegisterComponent implements OnInit {
        onSubmit() {
            this.submitted = true;
            if (this.registerForm.invalid) {
+            if ( this.registerForm.value.password
+              && this.registerForm.value.password_confirmation
+              && this.registerForm.value.password.length > 0
+              && this.registerForm.value.password_confirmation.length > 0
+              && this.registerForm.value.password !==  this.registerForm.value.password_confirmation) {
+              this.isPasswordNotMatch = true;
+           }
                return;
            } else if (!this.registerForm.invalid) {
+            if ( this.registerForm.value.password
+              && this.registerForm.value.password_confirmation
+              && this.registerForm.value.password.length > 0
+              && this.registerForm.value.password_confirmation.length > 0
+              && this.registerForm.value.password !==  this.registerForm.value.password_confirmation) {
+              this.isPasswordNotMatch = true;
+           } else {
+              this.isPasswordNotMatch = false;
             this.register = new Register();
             this.register.fullName = this.registerForm.value.firstName;
             this.register.phoneNumber = this.registerForm.value.phoneNumber;
@@ -70,6 +88,7 @@ export class RegisterComponent implements OnInit {
               console.log(response);
               console.log('post');
           });
+        }
            }
        }
 
