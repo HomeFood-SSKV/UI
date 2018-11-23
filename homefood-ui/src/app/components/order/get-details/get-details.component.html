@@ -1,5 +1,8 @@
 
             <div>
+                    <div class="form-group">
+                            <app-search></app-search>
+                     </div>
                     <div *ngFor="let address of allDeliveryAddress" >
                             <h3> Delivery Address</h3>
                             <div>
@@ -33,6 +36,15 @@
                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fullName.errors }" />
                         <div *ngIf="submitted && f.fullName.errors" class="invalid-feedback">
                             <div *ngIf="f.fullName.errors.required">Full Name is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" formControlName="PhoneNumber"
+                        [(ngModel)]="deliveryAddress.phoneNumber"
+                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PhoneNumber.errors }" />
+                        <div *ngIf="submitted && f.PhoneNumber.errors" class="invalid-feedback">
+                            <div *ngIf="f.PhoneNumber.errors.required">Phone Number is required</div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -71,15 +83,7 @@
                             <div *ngIf="f.City.errors.required">City is required</div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="text" formControlName="PhoneNumber"
-                        [(ngModel)]="deliveryAddress.phoneNumber"
-                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PhoneNumber.errors }" />
-                        <div *ngIf="submitted && f.PhoneNumber.errors" class="invalid-feedback">
-                            <div *ngIf="f.PhoneNumber.errors.required">Phone Number is required</div>
-                        </div>
-                    </div>
+                    
                     <div class="form-group">
                         <label>
                             Delivery Address
@@ -87,6 +91,7 @@
                       <input type="radio" name="home" value="Home"> Home Address
                       <input type="radio" name="office" value="Office"> Office Address
                     </div>
+                    
                     <div class="form-group">
                             <button class="btn btn-primary" (click)="proceedToPay(deliveryAddress)">Delivery to this address</button>
                             <button class="btn btn-primary">Save</button>

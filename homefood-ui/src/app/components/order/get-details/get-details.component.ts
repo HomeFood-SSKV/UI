@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup,FormControl, Validators } from '@angular/forms';
 import { DeliveryAddress } from '../../../model/field-model';
 import { ApiService } from '../../../services/api.service';
-import { Router }  from '@angular/router';
+import { Router } from '@angular/router';
 import * as $ from 'jquery';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-get-details',
@@ -11,6 +13,10 @@ import * as $ from 'jquery';
   styleUrls: ['./get-details.component.css']
 })
 export class GetDetailsComponent implements OnInit {
+
+  myControl = new FormControl();
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<string[]>;
 
   detailsForm: FormGroup;
   submitted = false;
@@ -21,8 +27,15 @@ export class GetDetailsComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private apiService: ApiService,
     private router: Router) { }
-
+    private _filter(value: string): string[] {
+      const filterValue = value.toLowerCase();
+      return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+    }
   ngOnInit() {
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
     // Mock data
     this.getDeliveryAddress();
     this.detailsForm = this.formBuilder.group({
