@@ -1,74 +1,89 @@
 
-            <div >
-                <h3>Delivery Address1</h3>
-                <div>
-                  Full name: rahul sharma,
-                  tcs office, solinganallur, pin code 132324
-                  <br>
-                  <a href="javascript:void(0)" (click)="proceedToPay()">Delivery to this address</a><br>
-                  <a href="">Edit</a>
-                  <a href=""> Delete</a>
-                </div>
-                <h3>Delivery Address2</h3>
-                <div>
-                    Full name:  david victor,
-                    tcs office, solinganallur, pin code 132324
-                    <br>
-                    <a href="javascript:void(0)" (click)="proceedToPay()">Delivery to this address</a><br>
-                    <a href="">Edit</a>
-                    <a href=""> Delete</a>
-                  </div>
-                  <br>
-                  <br>
-                  <div>
-                      
-                      <a href="">Add new Delivery Address</a><br>
-                      
+            <div>
+                    <div class="form-group">
+                            <app-search></app-search>
+                     </div>
+                    <div *ngFor="let address of allDeliveryAddress" >
+                            <h3> Delivery Address</h3>
+                            <div>
+                            {{address.fullName}}, 
+                            {{address.areaName}}, <br>
+                            {{address.addressLine1}}, 
+                            {{address.addressLine2}}, <br>
+                            {{address.city}}, 
+                            {{address.state}}, <br>
+                            {{address.addressType}},
+                            {{address.country}}, <br>
+                            {{address.pinCode}}, <br>
+                            {{address.phoneNumber}}
+                              <br>
+                              <div id="{{'ele'+address.id}}" class="form-group">
+                                    <button class="btn btn-primary" (click)="proceedToPay(address)">Deliver to this address</button>
+                                    <button class="btn btn-primary" (click)="updateDeliveryAddress(address)" > Edit</button>
+                                    <button class="btn btn-primary" (click)="deleteDeliveryAddress(address)"> Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    <div>
+                      <button class="btn btn-primary" (click)="addDeliveryAddressForm()">Add New Address</button>
                     </div>
-                    <br>
+                    <div *ngIf='isShowForm'>
                 <form [formGroup]="detailsForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
                         <label>Full Name</label>
-                        <input type="text" formControlName="fullName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fullName.errors }" />
+                        <input type="text" formControlName="fullName" 
+                        [(ngModel)]="deliveryAddress.fullName" 
+                        class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fullName.errors }" />
                         <div *ngIf="submitted && f.fullName.errors" class="invalid-feedback">
                             <div *ngIf="f.fullName.errors.required">Full Name is required</div>
                         </div>
                     </div>
                     <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" formControlName="PhoneNumber"
+                        [(ngModel)]="deliveryAddress.phoneNumber"
+                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PhoneNumber.errors }" />
+                        <div *ngIf="submitted && f.PhoneNumber.errors" class="invalid-feedback">
+                            <div *ngIf="f.PhoneNumber.errors.required">Phone Number is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label>Area Name</label>
-                        <input type="text" formControlName="AreaName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AreaName.errors }" />
+                        <input type="text" formControlName="AreaName"
+                        [(ngModel)]="deliveryAddress.areaName"
+                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AreaName.errors }" />
                         <div *ngIf="submitted && f.AreaName.errors" class="invalid-feedback">
                             <div *ngIf="f.AreaName.errors.required">Area Name is required</div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Address Line1</label>
-                        <input type="text" formControlName="AddressLine1" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AddressLine1.errors }" />
+                        <input type="text" formControlName="AddressLine1"
+                        [(ngModel)]="deliveryAddress.addressLine1"
+                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AddressLine1.errors }" />
                         <div *ngIf="submitted && f.AddressLine1.errors" class="invalid-feedback">
                             <div *ngIf="f.AddressLine1.errors.required">Adress line is required</div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Address Line2</label>
-                        <input type="text" formControlName="AddressLine2" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AddressLine2.errors }" />
+                        <input type="text" formControlName="AddressLine2"
+                        [(ngModel)]="deliveryAddress.addressLine2"
+                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AddressLine2.errors }" />
                         <!-- <div *ngIf="submitted && f.AddressLine2.errors" class="invalid-feedback">
                             <div *ngIf="f.AddressLine2.errors.required">Area Name is required</div>
                         </div> -->
                     </div>
                     <div class="form-group">
                         <label>City</label>
-                        <input type="text" formControlName="City" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.City.errors }" />
+                        <input type="text" formControlName="City"
+                        [(ngModel)]="deliveryAddress.city"
+                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.City.errors }" />
                         <div *ngIf="submitted && f.City.errors" class="invalid-feedback">
                             <div *ngIf="f.City.errors.required">City is required</div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="text" formControlName="PhoneNumber" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PhoneNumber.errors }" />
-                        <div *ngIf="submitted && f.PhoneNumber.errors" class="invalid-feedback">
-                            <div *ngIf="f.PhoneNumber.errors.required">Phone Number is required</div>
-                        </div>
-                    </div>
+                    
                     <div class="form-group">
                         <label>
                             Delivery Address
@@ -76,8 +91,11 @@
                       <input type="radio" name="home" value="Home"> Home Address
                       <input type="radio" name="office" value="Office"> Office Address
                     </div>
+                    
                     <div class="form-group">
-                        <button class="btn btn-primary">Save</button>
+                            <button class="btn btn-primary" (click)="proceedToPay(deliveryAddress)">Delivery to this address</button>
+                            <button class="btn btn-primary">Save</button>
                     </div>
                 </form>
+            </div>
             </div>

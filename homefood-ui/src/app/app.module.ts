@@ -26,6 +26,8 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent } from './components/common/header/header.component';
 import { FooterComponent } from './components/common/footer/footer.component';
+import { SearchComponent } from './components/common/search/search.component';
+// import { SearchService } from './services/search.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,7 +52,8 @@ import { FooterComponent } from './components/common/footer/footer.component';
     ComboHomeComponent,
     LandingPageComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
