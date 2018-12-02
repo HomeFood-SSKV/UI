@@ -1,0 +1,37 @@
+{
+    "transactionId" : "werwetwrwss",
+    "GSTAmount": "18",
+    "discountAmount":"12",
+    "originalPrice":"378",
+    "DiscountedTotalPrice":"366", // 244+122
+    "DeliveryAddressId":"",
+    "orderStatus":"orderInitiated", // payment selected, confirmed, etc
+    "data": [
+        {
+            "foodId": "1",
+            "foodName": "Veg meal",
+            "foodDescription": "Veg meal",
+            "imgUrl": "/jkj/lll.jpg",
+            "Actualprice": "4*60",
+            "GSTPrice": "4*03",
+            "Discountedprice":"4*02",
+            "DiscountedTotalprice":"8",
+            "Quantity":"4",
+            "TotalPrice": "4*60+(4*03)-8", // 244
+            "dateId":"01"
+        },
+        {
+            "foodId": "1",
+            "foodName": "Veg meal",
+            "foodDescription": "Veg meal",
+            "imgUrl": "/jkj/lll.jpg",
+            "Actualprice": "2*60",
+            "GSTPrice": "2*03",
+            "Discountedprice":"2*02",
+            "DiscountedTotalprice":"4",
+            "Quantity":"2",
+            "TotalPrice": "2*60+(2*03)-4", // 122
+            "dateId":"02"
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "foodDetails": [
+        {
+            "foodId":"1",
+            "DateId":"1",
+            "quantity":"4"
+        },
+        {
+            "foodId":"2",
+            "DateId":"1",
+            "quantity":"4"
+        }
+    ],
+    "userId": "2",
+    "deliveryDetailsId": "1"
+}

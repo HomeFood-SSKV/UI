@@ -1,0 +1,52 @@
+{
+    "addressType": [
+        {
+            "addressTypeId": "1",
+            "addressTypeName": "Home address"
+        },
+        {
+            "addressTypeId": "1",
+            "addressTypeName": "Office address"
+        }
+    ],
+    "deliveryPoint": [
+        {
+            "deliveryPointId": "1",
+            "deliveryPointName": "Siruseri tcs"
+        },
+        {
+            "deliveryPointId": "2",
+            "deliveryPointName": "Hcl solinganullur"
+        }
+    ],
+    "areaData": [
+        {
+            "areaId": "1",
+            "areaName": "Siruseri tcs"
+        },
+        {
+            "areaId": "2",
+            "areaName": "Hcl solinganullur"
+        }
+    ],
+    "cityData": [
+        {
+            "cityId": "1",
+            "cityName": "Chennai"
+        }
+    ],
+    "data": [
+        {
+            "addressId": "1",
+            "fullName": "sivaraj A",
+            "phoneNumber": "44456565566",
+            "areaDataId": "1",
+            "deliveryPointId" : "1",
+            "addressLine1": "sithalapakkam",
+            "addressLine2": "medavakkam",
+            "cityId": "1",
+            "pincode": "600112",
+            "addressTypeId": "1"
+        }
+    ]
+}

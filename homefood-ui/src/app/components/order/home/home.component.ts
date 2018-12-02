@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
       {'name': 'Veg meal', 'price':55, 'imgUrl':'', 'quantityAvailable':10},
       {'name': 'Veg briyani', 'price':60, 'imgUrl':'', 'quantityAvailable':10},
       {'name': 'Mutton briyani', 'price':70, 'imgUrl':'', 'quantityAvailable':10}
-  ];
+    ];
 
   }
 

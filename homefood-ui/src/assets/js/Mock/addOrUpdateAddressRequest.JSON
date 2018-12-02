@@ -1,0 +1,14 @@
+{
+    "userId": "1", // Once user id available need to add with useraddressdetails table. 
+    //if user id not available create login and add useraddressdetails table
+    "addressId":"0", // if addressid is 0 add the useraddressdetails table else update the useraddressdetails table
+    "fullName": "sivaraj A",
+    "phoneNumber": "44456565566",
+    "areaDataId": "1",
+    "deliveryPointId": "1",
+    "addressLine1": "sithalapakkam",
+    "addressLine2": "medavakkam",
+    "cityId": "1",
+    "pincode": "600112",
+    "addressTypeId": "1"
+}

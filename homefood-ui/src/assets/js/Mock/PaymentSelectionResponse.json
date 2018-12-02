@@ -1,0 +1,19 @@
+{
+    "supportedPayment":[ 
+        {
+
+            "PaymentID":"1",
+            "PaymentName":"Cash on delivery"
+        },
+        {
+
+            "PaymentID":"2",
+            "PaymentName":"Sodexo"
+        },
+        {
+
+            "PaymentID":"3",
+            "PaymentName":"internet banking"
+        }
+]
+}

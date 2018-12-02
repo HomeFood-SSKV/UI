@@ -1,0 +1,15 @@
+{
+    "data":"success",
+    "AddressId":"1"
+}
+
+//or
+
+{
+    "data" : "failure",
+    "error":{
+        "errorCode":"2323",
+        "errorMessage": "error description"
+    }
+}
+
