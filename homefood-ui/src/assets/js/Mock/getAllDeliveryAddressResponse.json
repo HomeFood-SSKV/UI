@@ -5,29 +5,70 @@
             "addressTypeName": "Home address"
         },
         {
-            "addressTypeId": "1",
+            "addressTypeId": "2",
             "addressTypeName": "Office address" 
         }
     ],
     "deliveryPoint": [
         {
             "deliveryPointId": "1",
-            "deliveryPointName": "delivery point one"
+            "deliveryPointName": "delivery point one",
+            "areaId": "1"
         },
         {
             "deliveryPointId": "2",
-            "deliveryPointName": "new delivery point"
+            "deliveryPointName": "delivery point two",
+            "areaId": "1"
+        },
+        {
+            "deliveryPointId": "3",
+            "deliveryPointName": "delivery point three",
+            "areaId": "2"
+        },
+        {
+            "deliveryPointId": "4",
+            "deliveryPointName": "delivery point four",
+            "areaId": "2"
+        },
+        {
+            "deliveryPointId": "5",
+            "deliveryPointName": "delivery point five",
+            "areaId": "3"
+        },
+        {
+            "deliveryPointId": "6",
+            "deliveryPointName": "delivery point six",
+            "areaId": "3"
         }
     ],
     "area": [
         {
             "areaId": "1",
-            "areaName": "Siruseri tcs"
+            "areaName": "Medavakam Global hospital",
+            "locationId": "1"
         },
         {
             "areaId": "2",
-            "areaName": "Hcl solinganullur"
+            "areaName": "Medavakam another area",
+            "locationId": "1"
+        },
+        {
+            "areaId": "3",
+            "areaName": "Hcl solinganullur",
+            "locationId": "2"
         }
+    ],
+    "location": [
+        {
+            "locationId": "1",
+            "locationName": "Medavakkam",
+            "cityId": "1"
+        },
+        {
+            "locationId": "2",
+            "locationName": "solinganallur",
+            "cityId": "1"
+        } 
     ],
     "city": [
         {
@@ -42,8 +83,9 @@
             "phoneNumber": "44456565566",
             "areaId": "1",
             "deliveryPointId" : "1",
-            "addressLine1": "sithalapakkam",
-            "addressLine2": "medavakkam",
+            "addressLine1": "perumal koil street",
+            "addressLine2": "second cross road",
+            "locationId": "1",
             "cityId": "1",
             "pincode": "600112",
             "addressTypeId": "1"

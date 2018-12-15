@@ -1,7 +1,7 @@
 
             <div>
                     <div class="form-group">
-                            <!-- <app-search></app-search> -->
+                            <!-- <app-search></app-search> --> Select city and location in home page and prefill here in new address
                      </div>
                     <div *ngFor="let address of allDeliveryAddress" >
                             <h3> Delivery Address</h3>
@@ -30,18 +30,41 @@
                     <div *ngIf='isShowForm'>
                 <form [formGroup]="detailsForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
-                        <label>Full Name</label>
+                        <label>Full Name:</label>
                         <input type="text" formControlName="FullName" 
                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.FullName.errors }" />
                         <div *ngIf="submitted && f.FullName.errors" class="invalid-feedback">
                             <div *ngIf="f.FullName.errors.required">Full Name is required</div>
                         </div>
-                    </div>
-                   
+                    </div> 
                     <div class="form-group">
-                        <label>Area Name</label>
+                        <label>Phone Number:</label>
+                        <input type="text" formControlName="PhoneNumber"
+                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PhoneNumber.errors }" />
+                        <div *ngIf="submitted && f.PhoneNumber.errors" class="invalid-feedback">
+                            <div *ngIf="f.PhoneNumber.errors.required">Phone Number is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group"> 
+                                <label> Location:</label>  
+                                    <select class="form-control" 
+                                     formControlName="LocationId"
+                                    (change)="changeLocation();" >  
+                                            <option selected="" value="0">Select</option>  
+                                         <option [ngValue]="k.locationId" *ngFor="let k of supportedLocation">  
+                                             {{k.locationName}}  
+                                      </option>  
+                                 </select> 
+                                 <!-- <div *ngIf="submitted && f.LocationName.errors" class="invalid-feedback">
+                                    <div *ngIf="f.LocationName.errors.required">LocationName is required</div>
+                                </div>  -->
+                                  
+                    </div>
+                    <div class="form-group">
+                        <label>Area Name:</label>
                         <input type="text" formControlName="AreaName"
                          class="form-control"
+                         (focus)="focusArea()"
                          placeholder="search for delivery area"
                          [ngClass]="{ 'is-invalid': submitted && f.AreaName.errors }" />
                          <ul>
@@ -51,14 +74,19 @@
                         <div *ngIf="submitted && f.AreaName.errors" class="invalid-feedback">
                             <div *ngIf="f.AreaName.errors.required">Area Name is required</div>
                         </div>
-                         
-                                
-                         
                     </div>
                     <div class="form-group">
-                        <label>Our Delivery Point</label>
+                        <label>
+                            Deliver To:
+                          </label>
+                      <input type="radio" name="home" value="Home">Our Delivery Point
+                      <input type="radio" name="office" value="Office"> Other (Home/Office Address)
+                    </div>
+                    <div class="form-group">
+                        <label>Our Delivery Point:</label>
                         <input type="text" formControlName="DeliveryPoint"
                          class="form-control"
+                         (focus)="focusDeliveryPoint()"
                          placeholder="search for delivery point"
                          [ngClass]="{ 'is-invalid': submitted && f.DeliveryPoint.errors }" />
                          <ul>
@@ -70,7 +98,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Address Line1</label>
+                        <label>Address Line1:</label>
                         <input type="text" formControlName="AddressLine1"
                          class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AddressLine1.errors }" />
                         <div *ngIf="submitted && f.AddressLine1.errors" class="invalid-feedback">
@@ -78,12 +106,21 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Address Line2</label>
+                        <label>Address Line2:</label>
                         <input type="text" formControlName="AddressLine2"
                          class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AddressLine2.errors }" />
                     </div>
+                   
                     <div class="form-group">
-                        <label>City</label>
+                        <label>Pin Code:</label>
+                        <input type="text" formControlName="PinCode"
+                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PinCode.errors }" />
+                        <div *ngIf="submitted && f.PinCode.errors" class="invalid-feedback">
+                            <div *ngIf="f.PinCode.errors.required">Pin Code is required</div>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label>City:</label>
                         <input type="text" formControlName="City"
                          class="form-control" [ngClass]="{ 'is-invalid': submitted && f.City.errors }" />
                         <ul> 
@@ -95,31 +132,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Pin Code</label>
-                        <input type="text" formControlName="PinCode"
-                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PinCode.errors }" />
-                        <div *ngIf="submitted && f.PinCode.errors" class="invalid-feedback">
-                            <div *ngIf="f.PinCode.errors.required">Pin Code is required</div>
-                        </div>
-                    </div> 
-                    <div class="form-group">
-                        <label>
-                            Delivery Address Type
-                          </label>
-                      <input type="radio" name="home" value="Home"> Home Address
-                      <input type="radio" name="office" value="Office"> Office Address
-                    </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="text" formControlName="PhoneNumber"
-                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PhoneNumber.errors }" />
-                        <div *ngIf="submitted && f.PhoneNumber.errors" class="invalid-feedback">
-                            <div *ngIf="f.PhoneNumber.errors.required">Phone Number is required</div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                            <button class="btn btn-primary" (click)="proceedToPay(deliveryAddress)">Delivery to this address</button>
-                            <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                            <button class="btn btn-primary" (click)="onSubmit()">Save & Delivery Here</button>
+                            <button class="btn btn-primary" (click)="cancelAddressForm()">Cancel</button>
                     </div>
                 </form>
             </div>

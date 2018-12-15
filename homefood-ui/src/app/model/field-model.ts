@@ -21,6 +21,7 @@ export class Register {
     deliveryPoint: DeliveryPoint;
     addressLine1: string;
     addressLine2?: string;
+    location: Location;
     city: City;
     state?: string;
     Country?: string;
@@ -39,6 +40,10 @@ export class Register {
   export class Area {
     areaId: number;
     areaName: string;
+  }
+  export class Location {
+    locationId: number;
+    locationName: string;
   }
   export class City {
     cityId: number;

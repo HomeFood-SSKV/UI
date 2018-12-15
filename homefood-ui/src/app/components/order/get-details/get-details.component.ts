@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { DeliveryAddress, AddressType, DeliveryPoint, Area, City } from '../../../model/field-model';
+import { DeliveryAddress, AddressType, DeliveryPoint, Area, City, Location } from '../../../model/field-model';
 import { ADDRESS_URL_CONSTANT } from '../../../model/constant-config';
 import { ApiService } from '../../../services/api.service';
 import { Router } from '@angular/router';
@@ -27,10 +27,15 @@ export class GetDetailsComponent implements OnInit {
   deliveryPoint: DeliveryPoint;
   area: Area ;
   city: City;
+  location: Location;
   private allDeliveryAddress: any = [] ;
   filteredArea: any = [] ;
   filteredDeliveryPoint: any = [] ;
   filteredCity: any = [];
+  supportedLocation: any = [];
+  supportedArea: any = [];
+  supportedDeliveryPoint: any = [];
+  supportedCity: any = [];
   private isShowForm = false;
   private action = 'add';
   constructor(private formBuilder: FormBuilder,
@@ -40,53 +45,107 @@ export class GetDetailsComponent implements OnInit {
     this.isShowForm = true; //  remove after development
     this.detailsForm = this.formBuilder.group({
       FullName: ['', Validators.required],
+      LocationId: ['', Validators.required],
       AreaName: ['', Validators.required],
-      DeliveryPoint: ['', Validators.required],
-      AddressLine1: ['', Validators.required],
+      DeliveryPoint: [''],
+      AddressLine1: [''],
       AddressLine2: [''],
-      City: ['', Validators.required],
-      PinCode: ['', Validators.required],
+      City: ['Chennai', Validators.required],
+      PinCode: [''],
       PhoneNumber: ['', Validators.required]
     });
+
+    this.getDeliveryAddress();
     this.filterArea();
     this.filterDeliveryPoint();
     this.filterCity();
-    this.getDeliveryAddress();
+  }
+  // location manipulation
+  changeLocation() {
+    this.resetArea();
+    let locId;
+    locId = this.detailsForm.value.LocationId;
+    if (locId) {
+    for (let x = 0 ; x < this.allAddressResponse.area.length; x++) {
+      if (this.allAddressResponse.area[x].locationId === locId) {
+      this.supportedArea.push(this.allAddressResponse.area[x]);
+      }
+     }
+    }
+  }
+  getSelectedlocation(locationId: number) {
+    this.deliveryAddress.location.locationId = locationId;
+  }
+   // area manipulation
+  resetArea() {
+    this.detailsForm.controls.AreaName.setValue('');
+    this.deliveryAddress.area = null;
+    this.supportedArea = [];
+    this.filteredArea = [];
+    this.detailsForm.controls.DeliveryPoint.setValue('');
+    this.deliveryAddress.deliveryPoint = null;
+    this.supportedDeliveryPoint = [];
+    this.filteredDeliveryPoint = [];
   }
   filterArea() {
     this.detailsForm.controls.AreaName.valueChanges.subscribe(
       val => {
         this.filteredArea = [];
         if (val.length > 0 ) {
-          for (let x = 0 ; x < this.allAddressResponse.area.length; x++) {
-            if (this.allAddressResponse.area[x].areaName.toLowerCase().indexOf(val.toLowerCase()) > -1) {
-            this.filteredArea.push(this.allAddressResponse.area[x]);
+          for (let x = 0 ; x < this.supportedArea.length; x++) {
+            if (this.supportedArea[x].areaName.toLowerCase().indexOf(val.toLowerCase()) > -1) {
+            this.filteredArea.push(this.supportedArea[x]);
             }
            }
         }
         if (val.length === 0 ) {
-          this.filteredArea = this.allAddressResponse.area;
+          this.filteredArea = this.supportedArea;
         }
         }
     );
   }
+  focusArea() {
+          this.filteredArea = this.supportedArea;
+  }
+  getSelectedArea(area: Area) {
+    this.detailsForm.controls.AreaName.setValue(area.areaName);
+    this.deliveryAddress.area = area;
+    this.filteredArea = [];
+     if (area.areaId) {
+    for (let x = 0 ; x < this.allAddressResponse.deliveryPoint.length; x++) {
+      if (this.allAddressResponse.deliveryPoint[x].areaId === area.areaId) {
+      this.supportedDeliveryPoint.push(this.allAddressResponse.deliveryPoint[x]);
+      }
+     }
+    }
+}
+ // delivery point manipulation
   filterDeliveryPoint() {
     this.detailsForm.controls.DeliveryPoint.valueChanges.subscribe(
       val => {
         this.filteredDeliveryPoint = [];
         if (val.length > 0 ) {
-          for (let x = 0 ; x < this.allAddressResponse.deliveryPoint.length; x++) {
-            if (this.allAddressResponse.deliveryPoint[x].deliveryPointName.toLowerCase().indexOf(val.toLowerCase()) > -1) {
-            this.filteredDeliveryPoint.push(this.allAddressResponse.deliveryPoint[x]);
+          for (let x = 0 ; x < this.supportedDeliveryPoint.length; x++) {
+            if (this.supportedDeliveryPoint[x].deliveryPointName.toLowerCase().indexOf(val.toLowerCase()) > -1) {
+            this.filteredDeliveryPoint.push(this.supportedDeliveryPoint[x]);
             }
            }
         }
         if (val.length === 0 ) {
-          this.filteredDeliveryPoint = this.allAddressResponse.deliveryPoint;
+          this.filteredDeliveryPoint = this.supportedDeliveryPoint;
         }
         }
     );
   }
+  getSelectedDeliveryPoint(deliveryPoint: DeliveryPoint) {
+    this.detailsForm.controls.DeliveryPoint.setValue(deliveryPoint.deliveryPointName);
+    this.deliveryAddress.deliveryPoint = deliveryPoint;
+    this.filteredDeliveryPoint = [];
+}
+focusDeliveryPoint() {
+  this.filteredDeliveryPoint = this.supportedDeliveryPoint;
+}
+   // city manipulation
   filterCity() {
     this.detailsForm.controls.City.valueChanges.subscribe(
       val => {
@@ -104,15 +163,27 @@ export class GetDetailsComponent implements OnInit {
         }
     );
   }
-  getSelectedDeliveryPoint(deliveryPoint: DeliveryPoint) {
-      this.detailsForm.controls.DeliveryPoint.setValue(deliveryPoint.deliveryPointName);
-  }
-  getSelectedArea(area: Area) {
-    this.detailsForm.controls.AreaName.setValue(area.areaName);
-}
+
 getSelectedCity(city: City) {
   this.detailsForm.controls.City.setValue(city.cityName);
+  this.deliveryAddress.city = city;
 }
+// reset form
+ cancelAddressForm() {
+  this.deliveryAddress = new DeliveryAddress();
+  this.detailsForm.controls.FullName.setValue('');
+  this.detailsForm.controls.AddressLine1.setValue('');
+  this.detailsForm.controls.AddressLine2.setValue('');
+  this.detailsForm.controls.PinCode.setValue('');
+  this.detailsForm.controls.PhoneNumber.setValue('');
+  this.detailsForm.controls.LocationId.setValue('');
+  this.detailsForm.controls.AreaName.setValue('');
+  this.detailsForm.controls.DeliveryPoint.setValue('');
+  this.isShowForm = false;
+  this.filteredArea = [];
+  this.filteredDeliveryPoint = [];
+ }
+// get address manipulation
   getDeliveryAddress() {
     const getAddressUrl = ADDRESS_URL_CONSTANT['GET'];
     this.apiService.getData(getAddressUrl).subscribe((response) => {
@@ -123,6 +194,9 @@ getSelectedCity(city: City) {
       this.deliveryPoint = response.deliveryPoint || [];
       this.area = response.area || [];
       this.city = response.city || [];
+      this.supportedLocation = response.location;
+      this.deliveryAddress.city = response.city;
+      this.supportedCity = response.city;
       console.log('post');
     });
 
@@ -138,14 +212,10 @@ getSelectedCity(city: City) {
   updateDeliveryAddress(address) {
     this.action = 'update';
     this.isShowForm = true;
-    this.deliveryAddress.addressId = address.addressId;
     this.deliveryAddress.fullName = address.fullName;
-    this.deliveryAddress.area.areaId = address.areaName;
     this.deliveryAddress.addressLine1 = address.addressLine1;
     this.deliveryAddress.addressLine2 = address.addressLine2;
-    this.deliveryAddress.city.cityId = address.city;
     this.deliveryAddress.phoneNumber = address.phoneNumber;
-    this.deliveryAddress.addressType.addressTypeId = address.addressType;
   }
   deleteDeliveryAddress(address) {
       // delete here
@@ -170,15 +240,11 @@ getSelectedCity(city: City) {
     if (this.detailsForm.invalid) {
       return;
     } else if (!this.detailsForm.invalid) {
-      this.deliveryAddress.fullName = this.detailsForm.value.fullName;
-      this.deliveryAddress.area.areaId = this.detailsForm.value.AreaName;
+      this.deliveryAddress.fullName = this.detailsForm.value.FullName;
       this.deliveryAddress.addressLine1 = this.detailsForm.value.AddressLine1;
       this.deliveryAddress.addressLine2 = this.detailsForm.value.AddressLine2;
-      this.deliveryAddress.city.cityId = this.detailsForm.value.City;
       this.deliveryAddress.phoneNumber = this.detailsForm.value.PhoneNumber;
-      this.deliveryAddress.addressType.addressTypeId = this.detailsForm.value.AddressType;
-
-      // move the if else into response success
+       // move the if else into response success
       if (this.action === 'add') {
         this.deliveryAddress.addressId = 0;
         this.isShowForm = false;
@@ -197,6 +263,7 @@ getSelectedCity(city: City) {
       const url = 'https://st1.flysddas.com/translations/sasui-upsell/upsell_en.json';
       this.apiService.postData(url, this.deliveryAddress).subscribe((response) => {
         console.log(response);
+        this.proceedToPay(null);
         console.log('post');
       });
     }
