@@ -6,20 +6,20 @@
         },
         {
             "addressTypeId": "1",
-            "addressTypeName": "Office address"
+            "addressTypeName": "Office address" 
         }
     ],
     "deliveryPoint": [
         {
             "deliveryPointId": "1",
-            "deliveryPointName": "Siruseri tcs"
+            "deliveryPointName": "delivery point one"
         },
         {
             "deliveryPointId": "2",
-            "deliveryPointName": "Hcl solinganullur"
+            "deliveryPointName": "new delivery point"
         }
     ],
-    "areaData": [
+    "area": [
         {
             "areaId": "1",
             "areaName": "Siruseri tcs"
@@ -29,7 +29,7 @@
             "areaName": "Hcl solinganullur"
         }
     ],
-    "cityData": [
+    "city": [
         {
             "cityId": "1",
             "cityName": "Chennai"
@@ -40,7 +40,7 @@
             "addressId": "1",
             "fullName": "sivaraj A",
             "phoneNumber": "44456565566",
-            "areaDataId": "1",
+            "areaId": "1",
             "deliveryPointId" : "1",
             "addressLine1": "sithalapakkam",
             "addressLine2": "medavakkam",

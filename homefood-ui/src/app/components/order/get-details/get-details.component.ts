@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup,FormControl, Validators } from '@angular/forms';
-import { DeliveryAddress } from '../../../model/field-model';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { DeliveryAddress, AddressType, DeliveryPoint, Area, City } from '../../../model/field-model';
+import { ADDRESS_URL_CONSTANT } from '../../../model/constant-config';
 import { ApiService } from '../../../services/api.service';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
@@ -20,57 +21,111 @@ export class GetDetailsComponent implements OnInit {
 
   detailsForm: FormGroup;
   submitted = false;
+  allAddressResponse: any;
   deliveryAddress = new DeliveryAddress();
-  private allDeliveryAddress: any;
+  addressType: AddressType;
+  deliveryPoint: DeliveryPoint;
+  area: Area ;
+  city: City;
+  private allDeliveryAddress: any = [] ;
+  filteredArea: any = [] ;
+  filteredDeliveryPoint: any = [] ;
+  filteredCity: any = [];
   private isShowForm = false;
   private action = 'add';
   constructor(private formBuilder: FormBuilder,
     private apiService: ApiService,
     private router: Router) { }
-    private _filter(value: string): string[] {
-      const filterValue = value.toLowerCase();
-      return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
-    }
   ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
-    // Mock data
-    this.getDeliveryAddress();
+    this.isShowForm = true; //  remove after development
     this.detailsForm = this.formBuilder.group({
-      fullName: ['', Validators.required],
+      FullName: ['', Validators.required],
       AreaName: ['', Validators.required],
+      DeliveryPoint: ['', Validators.required],
       AddressLine1: ['', Validators.required],
       AddressLine2: [''],
       City: ['', Validators.required],
+      PinCode: ['', Validators.required],
       PhoneNumber: ['', Validators.required]
     });
+    this.filterArea();
+    this.filterDeliveryPoint();
+    this.filterCity();
+    this.getDeliveryAddress();
   }
+  filterArea() {
+    this.detailsForm.controls.AreaName.valueChanges.subscribe(
+      val => {
+        this.filteredArea = [];
+        if (val.length > 0 ) {
+          for (let x = 0 ; x < this.allAddressResponse.area.length; x++) {
+            if (this.allAddressResponse.area[x].areaName.toLowerCase().indexOf(val.toLowerCase()) > -1) {
+            this.filteredArea.push(this.allAddressResponse.area[x]);
+            }
+           }
+        }
+        if (val.length === 0 ) {
+          this.filteredArea = this.allAddressResponse.area;
+        }
+        }
+    );
+  }
+  filterDeliveryPoint() {
+    this.detailsForm.controls.DeliveryPoint.valueChanges.subscribe(
+      val => {
+        this.filteredDeliveryPoint = [];
+        if (val.length > 0 ) {
+          for (let x = 0 ; x < this.allAddressResponse.deliveryPoint.length; x++) {
+            if (this.allAddressResponse.deliveryPoint[x].deliveryPointName.toLowerCase().indexOf(val.toLowerCase()) > -1) {
+            this.filteredDeliveryPoint.push(this.allAddressResponse.deliveryPoint[x]);
+            }
+           }
+        }
+        if (val.length === 0 ) {
+          this.filteredDeliveryPoint = this.allAddressResponse.deliveryPoint;
+        }
+        }
+    );
+  }
+  filterCity() {
+    this.detailsForm.controls.City.valueChanges.subscribe(
+      val => {
+        this.filteredCity = [];
+        if (val.length > 0 ) {
+          for (let x = 0 ; x < this.allAddressResponse.city.length; x++) {
+            if (this.allAddressResponse.city[x].cityName.toLowerCase().indexOf(val.toLowerCase()) > -1) {
+            this.filteredCity.push(this.allAddressResponse.city[x]);
+            }
+           }
+        }
+        if (val.length === 0 ) {
+          this.filteredCity = this.allAddressResponse.city;
+        }
+        }
+    );
+  }
+  getSelectedDeliveryPoint(deliveryPoint: DeliveryPoint) {
+      this.detailsForm.controls.DeliveryPoint.setValue(deliveryPoint.deliveryPointName);
+  }
+  getSelectedArea(area: Area) {
+    this.detailsForm.controls.AreaName.setValue(area.areaName);
+}
+getSelectedCity(city: City) {
+  this.detailsForm.controls.City.setValue(city.cityName);
+}
   getDeliveryAddress() {
-     this.allDeliveryAddress = [
-     { id : 1,
-       fullName : 'Jane Smith',
-    areaName : '123 Maple Street',
-    addressLine1 : 'Pretendville',
-    addressLine2 : 'NY',
-    city : 'city1',
-    phoneNumber: '7987987898',
-    state: 'state1',
-    country: 'country1',
-    pinCode   : '12345' , addressType: 'AddressType1'
-  } ,
-    { id : 2,
-      fullName : 'Sham',
-    areaName : 'area Street',
-    addressLine1 : 'address line1 ',
-    addressLine2 : 'address line 2',
-    city : 'city2',
-    phoneNumber: '54545454545',
-    state: 'state2',
-    country: 'country2',
-    pinCode   : '55545', addressType: 'AddressType2' }
-  ];
+    const getAddressUrl = ADDRESS_URL_CONSTANT['GET'];
+    this.apiService.getData(getAddressUrl).subscribe((response) => {
+      console.log(response);
+      this.allAddressResponse = response;
+      this.allDeliveryAddress = response.data || [];
+      this.addressType = response.addressType || [];
+      this.deliveryPoint = response.deliveryPoint || [];
+      this.area = response.area || [];
+      this.city = response.city || [];
+      console.log('post');
+    });
+
     if (this.allDeliveryAddress.length === 0) {
       this.isShowForm = true;
     }
@@ -83,14 +138,14 @@ export class GetDetailsComponent implements OnInit {
   updateDeliveryAddress(address) {
     this.action = 'update';
     this.isShowForm = true;
-    this.deliveryAddress.id = address.id;
+    this.deliveryAddress.addressId = address.addressId;
     this.deliveryAddress.fullName = address.fullName;
-    this.deliveryAddress.areaName = address.areaName;
+    this.deliveryAddress.area.areaId = address.areaName;
     this.deliveryAddress.addressLine1 = address.addressLine1;
     this.deliveryAddress.addressLine2 = address.addressLine2;
-    this.deliveryAddress.city = address.city;
+    this.deliveryAddress.city.cityId = address.city;
     this.deliveryAddress.phoneNumber = address.phoneNumber;
-    this.deliveryAddress.addressType = address.addressType;
+    this.deliveryAddress.addressType.addressTypeId = address.addressType;
   }
   deleteDeliveryAddress(address) {
       // delete here
@@ -116,22 +171,22 @@ export class GetDetailsComponent implements OnInit {
       return;
     } else if (!this.detailsForm.invalid) {
       this.deliveryAddress.fullName = this.detailsForm.value.fullName;
-      this.deliveryAddress.areaName = this.detailsForm.value.AreaName;
+      this.deliveryAddress.area.areaId = this.detailsForm.value.AreaName;
       this.deliveryAddress.addressLine1 = this.detailsForm.value.AddressLine1;
       this.deliveryAddress.addressLine2 = this.detailsForm.value.AddressLine2;
-      this.deliveryAddress.city = this.detailsForm.value.City;
+      this.deliveryAddress.city.cityId = this.detailsForm.value.City;
       this.deliveryAddress.phoneNumber = this.detailsForm.value.PhoneNumber;
-      this.deliveryAddress.addressType = this.detailsForm.value.AddressType;
-     
+      this.deliveryAddress.addressType.addressTypeId = this.detailsForm.value.AddressType;
+
       // move the if else into response success
       if (this.action === 'add') {
-        this.deliveryAddress.id = 0;
+        this.deliveryAddress.addressId = 0;
         this.isShowForm = false;
         this.allDeliveryAddress.push(this.deliveryAddress);
        } else if (this.action === 'update'
-             && this.deliveryAddress.id !== 0 ) {
+             && this.deliveryAddress.addressId !== 0 ) {
               for (let i = 0; i < this.allDeliveryAddress.length; i++) {
-                if (this.allDeliveryAddress[i].id === this.deliveryAddress.id) {
+                if (this.allDeliveryAddress[i].addressId === this.deliveryAddress.addressId) {
                   this.allDeliveryAddress[i] = this.deliveryAddress;
                   this.isShowForm = false;
                   this.deliveryAddress = new DeliveryAddress();

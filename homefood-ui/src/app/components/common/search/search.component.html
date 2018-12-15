@@ -6,7 +6,8 @@
    <input [formControl]="queryField" type="text" id="keyword" placeholder="search for ..." autofocus/>
      </div> 
    <ul class="filter-select">
-     <li *ngFor="let result of FilteredResults" class="filter-select-list"> 
-       {{result.addressType}}
+     <li *ngFor="let result of FilteredResults" (click)='getSelectedData(result)' class="filter-select-list"> 
+       {{result.addressTypeName}}
     </ul>
+   Selected Address Type: {{selectedAddressType}}
    </section>

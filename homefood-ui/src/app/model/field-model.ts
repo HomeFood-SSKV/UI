@@ -15,15 +15,32 @@ export class Register {
     password: string;
   }
   export class DeliveryAddress {
-    id: number;
+    addressId: number;
     fullName: string;
-    areaName: string;
+    area: Area;
+    deliveryPoint: DeliveryPoint;
     addressLine1: string;
     addressLine2?: string;
-    city: string;
-    state: string;
-    Country: string;
-    pinCode: string;
+    city: City;
+    state?: string;
+    Country?: string;
+    pincode: string;
     phoneNumber: number;
-    addressType: number;
+    addressType: AddressType;
+  }
+  export class AddressType {
+    addressTypeId: number;
+    addressTypeName: string;
+  }
+  export class DeliveryPoint {
+    deliveryPointId: number;
+    deliveryPointName: string;
+  }
+  export class Area {
+    areaId: number;
+    areaName: string;
+  }
+  export class City {
+    cityId: number;
+    cityName: string;
   }

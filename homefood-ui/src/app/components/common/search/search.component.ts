@@ -7,7 +7,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-
+  selectedAddressType: string;
   results: any;
   FilteredResults: any;
   queryField: FormControl = new FormControl();
@@ -15,8 +15,8 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
     this._searchService.search().subscribe((response) => {
-      if (response) {
-       this.results = response;
+      if (response && response.addressType) {
+      // this.results = response.addressType;
       //  this.FilteredResults = response;
        console.log('search success');
       } else {
@@ -28,7 +28,7 @@ export class SearchComponent implements OnInit {
       if (val.length > 0 ) {
         this.FilteredResults = [];
         for (let x = 0 ; x < this.results.length; x++) {
-          if (this.results[x].addressType.toLowerCase().indexOf(val.toLowerCase()) > -1) {
+          if (this.results[x].addressTypeName.toLowerCase().indexOf(val.toLowerCase()) > -1) {
           this.FilteredResults.push(this.results[x]);
           }
          }
@@ -38,5 +38,9 @@ export class SearchComponent implements OnInit {
       }
       }
     );
+  }
+  getSelectedData(selectedField: any) {
+ this.selectedAddressType = selectedField.addressTypeName;
+ this.queryField.setValue(selectedField.addressTypeName);
   }
 }

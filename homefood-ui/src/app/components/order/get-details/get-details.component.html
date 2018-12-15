@@ -1,7 +1,7 @@
 
             <div>
                     <div class="form-group">
-                            <app-search></app-search>
+                            <!-- <app-search></app-search> -->
                      </div>
                     <div *ngFor="let address of allDeliveryAddress" >
                             <h3> Delivery Address</h3>
@@ -31,35 +31,47 @@
                 <form [formGroup]="detailsForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
                         <label>Full Name</label>
-                        <input type="text" formControlName="fullName" 
-                        [(ngModel)]="deliveryAddress.fullName" 
-                        class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fullName.errors }" />
-                        <div *ngIf="submitted && f.fullName.errors" class="invalid-feedback">
-                            <div *ngIf="f.fullName.errors.required">Full Name is required</div>
+                        <input type="text" formControlName="FullName" 
+                        class="form-control" [ngClass]="{ 'is-invalid': submitted && f.FullName.errors }" />
+                        <div *ngIf="submitted && f.FullName.errors" class="invalid-feedback">
+                            <div *ngIf="f.FullName.errors.required">Full Name is required</div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="text" formControlName="PhoneNumber"
-                        [(ngModel)]="deliveryAddress.phoneNumber"
-                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PhoneNumber.errors }" />
-                        <div *ngIf="submitted && f.PhoneNumber.errors" class="invalid-feedback">
-                            <div *ngIf="f.PhoneNumber.errors.required">Phone Number is required</div>
-                        </div>
-                    </div>
+                   
                     <div class="form-group">
                         <label>Area Name</label>
                         <input type="text" formControlName="AreaName"
-                        [(ngModel)]="deliveryAddress.areaName"
-                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AreaName.errors }" />
+                         class="form-control"
+                         placeholder="search for delivery area"
+                         [ngClass]="{ 'is-invalid': submitted && f.AreaName.errors }" />
+                         <ul>
+                                <li *ngFor="let area of filteredArea" (click)='getSelectedArea(area)' class="filter-select-list"> 
+                                  {{area.areaName}}
+                               </ul> 
                         <div *ngIf="submitted && f.AreaName.errors" class="invalid-feedback">
                             <div *ngIf="f.AreaName.errors.required">Area Name is required</div>
+                        </div>
+                         
+                                
+                         
+                    </div>
+                    <div class="form-group">
+                        <label>Our Delivery Point</label>
+                        <input type="text" formControlName="DeliveryPoint"
+                         class="form-control"
+                         placeholder="search for delivery point"
+                         [ngClass]="{ 'is-invalid': submitted && f.DeliveryPoint.errors }" />
+                         <ul>
+                                <li *ngFor="let delpt of filteredDeliveryPoint" (click)='getSelectedDeliveryPoint(delpt)' class="filter-select-list"> 
+                                  {{delpt.deliveryPointName}}
+                               </ul>
+                        <div *ngIf="submitted && f.DeliveryPoint.errors" class="invalid-feedback">
+                            <div *ngIf="f.DeliveryPoint.errors.required">Delivery Point is required</div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Address Line1</label>
                         <input type="text" formControlName="AddressLine1"
-                        [(ngModel)]="deliveryAddress.addressLine1"
                          class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AddressLine1.errors }" />
                         <div *ngIf="submitted && f.AddressLine1.errors" class="invalid-feedback">
                             <div *ngIf="f.AddressLine1.errors.required">Adress line is required</div>
@@ -68,33 +80,46 @@
                     <div class="form-group">
                         <label>Address Line2</label>
                         <input type="text" formControlName="AddressLine2"
-                        [(ngModel)]="deliveryAddress.addressLine2"
                          class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AddressLine2.errors }" />
-                        <!-- <div *ngIf="submitted && f.AddressLine2.errors" class="invalid-feedback">
-                            <div *ngIf="f.AddressLine2.errors.required">Area Name is required</div>
-                        </div> -->
                     </div>
                     <div class="form-group">
                         <label>City</label>
                         <input type="text" formControlName="City"
-                        [(ngModel)]="deliveryAddress.city"
                          class="form-control" [ngClass]="{ 'is-invalid': submitted && f.City.errors }" />
+                        <ul> 
+                         <li *ngFor="let ct of filteredCity" (click)='getSelectedCity(ct)' class="filter-select-list"> 
+                                {{ct.cityName}}
+                             </ul> 
                         <div *ngIf="submitted && f.City.errors" class="invalid-feedback">
                             <div *ngIf="f.City.errors.required">City is required</div>
                         </div>
                     </div>
-                    
+                    <div class="form-group">
+                        <label>Pin Code</label>
+                        <input type="text" formControlName="PinCode"
+                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PinCode.errors }" />
+                        <div *ngIf="submitted && f.PinCode.errors" class="invalid-feedback">
+                            <div *ngIf="f.PinCode.errors.required">Pin Code is required</div>
+                        </div>
+                    </div> 
                     <div class="form-group">
                         <label>
-                            Delivery Address
+                            Delivery Address Type
                           </label>
                       <input type="radio" name="home" value="Home"> Home Address
                       <input type="radio" name="office" value="Office"> Office Address
                     </div>
-                    
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" formControlName="PhoneNumber"
+                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PhoneNumber.errors }" />
+                        <div *ngIf="submitted && f.PhoneNumber.errors" class="invalid-feedback">
+                            <div *ngIf="f.PhoneNumber.errors.required">Phone Number is required</div>
+                        </div>
+                    </div>
                     <div class="form-group">
                             <button class="btn btn-primary" (click)="proceedToPay(deliveryAddress)">Delivery to this address</button>
-                            <button class="btn btn-primary">Save</button>
+                            <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                     </div>
                 </form>
             </div>
