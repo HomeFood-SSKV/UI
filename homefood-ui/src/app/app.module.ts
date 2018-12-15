@@ -27,6 +27,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent } from './components/common/header/header.component';
 import { FooterComponent } from './components/common/footer/footer.component';
 import { SearchComponent } from './components/common/search/search.component';
+import { MealsPipe } from './pipes/meals.pipe';
 // import { SearchService } from './services/search.service';
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { SearchComponent } from './components/common/search/search.component';
     LandingPageComponent,
     HeaderComponent,
     FooterComponent,
-    SearchComponent
+    SearchComponent,
+    MealsPipe
   ],
   imports: [
     BrowserModule,

@@ -13,128 +13,34 @@
               <div class="row">
                   <!--  Menu Tabs Start  -->
                   <ul class="nav nav-tabs list-inline">
-                      <li class="nav-item">
-                          <a class="nav-link active" href="#all" data-toggle="tab" aria-expanded="true">All</a>
+                      <li class="nav-item" *ngFor="let category of allMeals.supportedCategory;let i = index;">
+                          <a class="nav-link" href="javascript:void(0);" (click)="selectCategory(category.categoryId);">{{category.categoryName}}</a>
                       </li>
-                      
-                      <li class="nav-item">
-                          <a class="nav-link" href="#lunch" data-toggle="tab" aria-expanded="false">Lunch</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="#dinner" data-toggle="tab" aria-expanded="false">Dinner</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="#drinks" data-toggle="tab" aria-expanded="false">Drinks</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="#others" data-toggle="tab" aria-expanded="false">Others</a>
-                      </li>
+                  </ul>
+                  <ul class="nav nav-tabs list-inline">
+                    <li class="nav-item" *ngFor="let dates of allMeals.supportedDates;let i = index;">
+                        <a class="nav-link" href="javascript:void(0);" (click)="selectDate(dates.dateId);">{{dates.date}}</a>
+                    </li>
                   </ul>
                   <!--  Menu Tabs End  -->
 
                   <!--  Menu Tabs Content Start  -->
                   <div class="tab-content">
-
+                    
                       <!--  Menu Tab All Start  -->
-                      <div class="tab-pane show active" id="all">
+                      <div class="tab-pane show active" >
                           <div class="row">
-                              <div class="col-md-3 col-sm-6 col-xs-12" *ngFor="let product of products;let i = index;">
+                              <div class="col-md-3 col-sm-6 col-xs-12" *ngFor="let product of (allMeals.data | meals:selectedOptions); let i = index;">
                                   <!-- Box Start -->
                                   <div class="box">
                                       <div class="image">
                                           <img src="assets/images/dishes-menu/01.jpg" alt="image" title="image" class="img-menu" />
                                       </div>
                                       <div class="caption">
-                                          <h4>{{product.name}}</h4>
+                                          <h4>{{product.foodName}} </h4>
                                           <span class="des">All</span>            
-                                          <div class="price">{{product.price}}</div>
-                                          <div><input type="button" value="Add" (click)="addProduct(i);" /></div>
-                                      </div>
-                                  </div>
-                                  <!-- Box End -->
-                              </div>
-                          </div>
-                      </div>
-                      <!--  Menu Tab All End  -->
-
-                       <!--  Menu Tab All Start  -->
-                       <div class="tab-pane show " id="lunch">
-                          <div class="row">
-                              <div class="col-md-3 col-sm-6 col-xs-12" *ngFor="let product of products;let i = index;">
-                                  <!-- Box Start -->
-                                  <div class="box">
-                                      <div class="image">
-                                          <img src="assets/images/dishes-menu/01.jpg" alt="image" title="image" class="img-menu" />
-                                      </div>
-                                      <div class="caption">
-                                          <h4>{{product.name}}</h4>
-                                          <span class="des">Lunch</span>            
-                                          <div class="price">{{product.price}}</div>
-                                          <div><input type="button" value="Add" (click)="addProduct(i);" /></div>
-                                      </div>
-                                  </div>
-                                  <!-- Box End -->
-                              </div>
-                          </div>
-                      </div>
-                      <!--  Menu Tab All End  -->
-
-                       <!--  Menu Tab All Start  -->
-                       <div class="tab-pane show " id="dinner">
-                          <div class="row">
-                              <div class="col-md-3 col-sm-6 col-xs-12" *ngFor="let product of products;let i = index;">
-                                  <!-- Box Start -->
-                                  <div class="box">
-                                      <div class="image">
-                                          <img src="assets/images/dishes-menu/01.jpg" alt="image" title="image" class="img-menu" />
-                                      </div>
-                                      <div class="caption">
-                                          <h4>{{product.name}}</h4>
-                                          <span class="des">Dinner</span>            
-                                          <div class="price">{{product.price}}</div>
-                                          <div><input type="button" value="Add" (click)="addProduct(i);" /></div>
-                                      </div>
-                                  </div>
-                                  <!-- Box End -->
-                              </div>
-                          </div>
-                      </div>
-                      <!--  Menu Tab All End  -->
-
-                       <!--  Menu Tab All Start  -->
-                       <div class="tab-pane show " id="drinks">
-                          <div class="row">
-                              <div class="col-md-3 col-sm-6 col-xs-12" *ngFor="let product of products;let i = index;">
-                                  <!-- Box Start -->
-                                  <div class="box">
-                                      <div class="image">
-                                          <img src="assets/images/dishes-menu/01.jpg" alt="image" title="image" class="img-menu" />
-                                      </div>
-                                      <div class="caption">
-                                          <h4>{{product.name}}</h4>
-                                          <span class="des">Drinks</span>            
-                                          <div class="price">{{product.price}}</div>
-                                          <div><input type="button" value="Add" (click)="addProduct(i);" /></div>
-                                      </div>
-                                  </div>
-                                  <!-- Box End -->
-                              </div>
-                          </div>
-                      </div>
-                      <!--  Menu Tab All End  -->
-                      <!--  Menu Tab All Start  -->
-                      <div class="tab-pane show " id="others">
-                          <div class="row">
-                              <div class="col-md-3 col-sm-6 col-xs-12" *ngFor="let product of products;let i = index;">
-                                  <!-- Box Start -->
-                                  <div class="box">
-                                      <div class="image">
-                                          <img src="assets/images/dishes-menu/01.jpg" alt="image" title="image" class="img-menu" />
-                                      </div>
-                                      <div class="caption">
-                                          <h4>{{product.name}}</h4>
-                                          <span class="des">Drinks</span>            
-                                          <div class="price">{{product.price}}</div>
+                                          <div class="price">{{product.price.price}}</div>
+                                          {{(product.discountPrice)}}
                                           <div><input type="button" value="Add" (click)="addProduct(i);" /></div>
                                       </div>
                                   </div>
@@ -159,12 +65,5 @@
 <!-- Food Menu End -->
 
 
-<div>
-  <div *ngFor="let product of products;let i = index;" >
-    <div>{{product.name}}</div>
-    <div>{{product.imgUrl}}</div>
-    <div>{{product.price}}</div>
-    <div><input type="button" value="Add" (click)="addProduct(i);" /></div>
-  </div>
-</div>  
+ 
 <app-shopping-cart></app-shopping-cart>

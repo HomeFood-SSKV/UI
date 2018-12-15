@@ -11,12 +11,16 @@
     ],
     "supportedDates": [
         {
-            "DateId": "1",
-            "Date": "05"
+            "dateId": "1",
+            "date": "05"
         },
         {
-            "DateId": "2",
-            "Date": "06"
+            "dateId": "2",
+            "date": "06"
+        },
+        {
+            "dateId": "3",
+            "date": "07"
         }
     ],
     "supportedType": [
@@ -33,14 +37,12 @@
         {
             "discountId": "1",
             "discountName": "discount for veg",
-            "DiscountPrice": "08" // calculated or actual Discount from Discountprice table (business logic)
-        
+            "discountPrice": "08"
         },
         {
             "discountId": "2",
             "discountName": "discount for non veg",
-            "DiscountPrice": "08" // calculated or actual Discount from Discountprice table (business logic)
-            
+            "discountPrice": "08"
         }
     ],
     "data": [
@@ -48,24 +50,24 @@
             "foodId": "1",
             "foodName": "Veg meal",
             "foodDescription": "Veg meal",
-            "imgUrl": "/jkj/lll.jpg",
+            "imgUrl": "assets/images/dishes-menu/01.jpg",
             "foodTypeId": "1",
             "categoryId": "1",
             "price": {
                 "priceId": "1",
-                "Actualprice": "60", // Meal actual price from price table
-                "GSTPrice": "03", // calculated GST from price table (business logic)
+                "Actualprice": "60",
+                "GSTPrice": "03",
                 "DiscountedTotalprice": [
                     {
                         "dateId": "1",
-                        "Price": "51" // (meal current price including GST and excluding discount: Ex:(60+03-08-04=55))
+                        "Price": "51"
                     },
                     {
                         "dateId": "2",
-                        "Price": "55" // (meal current price including GST and excluding discount: Ex:(60+03-08=55))
+                        "Price": "55"
                     }
                 ], 
-                "price": "63" // (meal current price including GST and excluding discount: Ex:(60+03=55))
+                "price": "63"
             },
             "discount": [
                "1","2"
@@ -75,25 +77,51 @@
             "foodName": "non Veg meal",
             "foodDescription": "Non Veg meal",
             "foodTypeId": "2",
-            "categoryId": "1",
+            "categoryId": "2",
             "price": {
                 "priceId": "1",
-                "Actualprice": "60", // Meal actual price from price table
-                "GSTPrice": "03", // calculated GST from price table (business logic)
-                "DiscountedTotalprice": [
+                "actualPrice": "60",
+                "gstPrice": "03",
+                "discountedTotalprice": [
                     {
                         "dateId": "1",
-                        "Price": "51" // (meal current price including GST and excluding discount: Ex:(60+03-08-04=55))
+                        "price": "51"
                     },
                     {
                         "dateId": "2",
-                        "Price": "55" // (meal current price including GST and excluding discount: Ex:(60+03-08=55))
+                        "price": "55"
                     }
                 ], 
-                "price": "63" // (meal current price including GST and excluding discount: Ex:(60+03=55))
+                "price": "63"
             },
             "discount": [
                "3","4"
+            ]
+        },{
+            "foodId": "3",
+            "foodName": "Veg briyani",
+            "foodDescription": "Veg briyani",
+            "imgUrl": "assets/images/dishes-menu/01.jpg",
+            "foodTypeId": "1",
+            "categoryId": "1",
+            "price": {
+                "priceId": "1",
+                "Actualprice": "60",
+                "GSTPrice": "03",
+                "DiscountedTotalprice": [
+                    {
+                        "dateId": "1",
+                        "Price": "51"
+                    },
+                    {
+                        "dateId": "2",
+                        "Price": "55"
+                    }
+                ], 
+                "price": "63"
+            },
+            "discount": [
+               "1","2"
             ]
         }
     ],
@@ -110,9 +138,13 @@
             "dateId": "2",
             "foodId": [
                 "1",
-                "2",
-                "3"
+                "2"
             ]
+        },
+        {
+            "dateId": "3",
+            "foodId": []
         }
+
     ]
 }
