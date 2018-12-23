@@ -21,6 +21,16 @@ export class GetDetailsComponent implements OnInit {
 
   detailsForm: FormGroup;
   submitted = false;
+  isLocationRequired = true;
+  isDeliveryPointRequired = false;
+  isAddressLine1Required = false;
+  isAddressLine2Required = false;
+  isPincodeRequired = false;
+  isLocationValid = false;
+  isDeliveryPointValid = false;
+  isAddressLine1Valid = false;
+  isAddressLine2Valid = false;
+  isPincodeValid = false;
   allAddressResponse: any;
   deliveryAddress = new DeliveryAddress();
   addressType: AddressType;
@@ -36,8 +46,12 @@ export class GetDetailsComponent implements OnInit {
   supportedArea: any = [];
   supportedDeliveryPoint: any = [];
   supportedCity: any = [];
+  supportedAddressType: any = [];
   private isShowForm = false;
   private action = 'add';
+  isShowDeliveryPoint = false;
+  isShowOtherAddress = false;
+  isFormValid = false;
   constructor(private formBuilder: FormBuilder,
     private apiService: ApiService,
     private router: Router) { }
@@ -183,6 +197,37 @@ getSelectedCity(city: City) {
   this.filteredArea = [];
   this.filteredDeliveryPoint = [];
  }
+ // Set Delivery address type
+ onAddressTypeSelectionChange(addressType) {
+  if (this.supportedAddressType.length > 0) {
+    for (let x = 0 ; x < this.supportedAddressType.length; x++) {
+      if (addressType.addressTypeId === this.supportedAddressType[x].addressTypeId) {
+        addressType.selected = true;
+        this.deliveryAddress.addressType = addressType;
+        this.supportedAddressType[x].selected = true;
+      } else {
+        this.supportedAddressType[x].selected = false;
+      }
+     }
+  }
+  if (addressType.addressTypeId === '1') {
+    this.isShowDeliveryPoint = true;
+    this.isShowOtherAddress = false;
+    //
+    this.isDeliveryPointRequired = true;
+    this.isAddressLine1Required = false;
+    this.isAddressLine2Required = false;
+    this.isPincodeRequired = false;
+  } else if (addressType.addressTypeId === '2') {
+    this.isShowDeliveryPoint = false;
+    this.isShowOtherAddress = true;
+    //
+    this.isDeliveryPointRequired = false;
+    this.isAddressLine1Required = true;
+    this.isAddressLine2Required = true;
+    this.isPincodeRequired = true;
+  }
+}
 // get address manipulation
   getDeliveryAddress() {
     const getAddressUrl = ADDRESS_URL_CONSTANT['GET'];
@@ -194,9 +239,11 @@ getSelectedCity(city: City) {
       this.deliveryPoint = response.deliveryPoint || [];
       this.area = response.area || [];
       this.city = response.city || [];
-      this.supportedLocation = response.location;
+      this.addLocationDefaultValue(response.location);
       this.deliveryAddress.city = response.city;
       this.supportedCity = response.city;
+      this.supportedAddressType = response.addressType || [];
+      this.refactorAddressTypeObject();
       console.log('post');
     });
 
@@ -204,6 +251,31 @@ getSelectedCity(city: City) {
       this.isShowForm = true;
     }
 
+  }
+  addLocationDefaultValue(locations: any) {
+    const len = locations.length;
+    locations[len] = { locationId: '0', locationName : '-- Select --' };
+     this.supportedLocation = locations;
+     this.detailsForm.controls.LocationId.setValue('0');
+  }
+  refactorAddressTypeObject() {
+    if (this.supportedAddressType.length > 0) {
+      for (let x = 0 ; x < this.supportedAddressType.length; x++) {
+        if (this.supportedAddressType[x].addressTypeId === '1') {
+          this.supportedAddressType[x].selected = true;
+          this.deliveryAddress.addressType =  this.supportedAddressType[x];
+          this.isShowDeliveryPoint = true;
+          this.isShowOtherAddress = false;
+          //
+          this.isDeliveryPointRequired = true;
+          this.isAddressLine1Required = false;
+          this.isAddressLine2Required = false;
+          this.isPincodeRequired = false;
+        } else {
+          this.supportedAddressType[x].selected = false;
+        }
+       }
+    }
   }
   addDeliveryAddressForm() {
     this.action = 'add';
@@ -237,6 +309,8 @@ getSelectedCity(city: City) {
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
+    this.validateLocationFields();
+    this.validateDeliveryAddressFields();
     if (this.detailsForm.invalid) {
       return;
     } else if (!this.detailsForm.invalid) {
@@ -266,9 +340,24 @@ getSelectedCity(city: City) {
         this.proceedToPay(null);
         console.log('post');
       });
-    }
   }
-
+  }
+  validateDeliveryAddressFields() {
+    if (this.detailsForm.value.DeliveryPoint !== '') {
+      this.isDeliveryPointValid = true;
+    } else if (this.detailsForm.value.DeliveryPoint === '') {
+      this.isDeliveryPointValid = false;
+    }
+    return this.isDeliveryPointValid;
+  }
+  validateLocationFields() {
+    if (this.detailsForm.value.LocationId !== '0') {
+      this.isLocationValid = true;
+    } else if (this.detailsForm.value.LocationId === '0') {
+      this.isLocationValid = false;
+    }
+    return this.isLocationValid;
+  }
   public proceedToPay(deliveryAddress: any) {
     console.log(deliveryAddress);
     this.router.navigate(['order/pay']);

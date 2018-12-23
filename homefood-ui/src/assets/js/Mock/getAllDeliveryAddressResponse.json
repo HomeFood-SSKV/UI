@@ -2,11 +2,11 @@
     "addressType": [
         {
             "addressTypeId": "1",
-            "addressTypeName": "Home address"
+            "addressTypeName": "Our Delivery Point"
         },
         {
             "addressTypeId": "2",
-            "addressTypeName": "Office address" 
+            "addressTypeName": "Others(Home/Office) Address" 
         }
     ],
     "deliveryPoint": [
