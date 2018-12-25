@@ -79,6 +79,7 @@ export class GetDetailsComponent implements OnInit {
     let locId;
     locId = this.detailsForm.value.LocationId;
     if (locId !== '0') {
+      this.getSelectedlocation(locId);
       this.isLocationValid = true;
     for (let x = 0 ; x < this.allAddressResponse.area.length; x++) {
       if (this.allAddressResponse.area[x].locationId === locId) {
@@ -87,10 +88,15 @@ export class GetDetailsComponent implements OnInit {
      }
     } else if (locId === '0') {
       this.isLocationValid = false;
+      this.deliveryAddress.location = null;
     }
   }
   getSelectedlocation(locationId: number) {
-    this.deliveryAddress.location.locationId = locationId;
+    for (let x = 0 ; x < this.allAddressResponse.location.length; x++) {
+      if (this.allAddressResponse.location[x].locationId === locationId) {
+        this.deliveryAddress.location = this.allAddressResponse.location[x];
+      }
+     }
   }
    // area manipulation
   resetArea() {
@@ -286,13 +292,31 @@ getSelectedCity(city: City) {
     this.action = 'add';
     this.isShowForm = true;
   }
-  updateDeliveryAddress(address) {
+  EditDeliveryAddress(address) {
     this.action = 'update';
     this.isShowForm = true;
-    this.deliveryAddress.fullName = address.fullName;
-    this.deliveryAddress.addressLine1 = address.addressLine1;
-    this.deliveryAddress.addressLine2 = address.addressLine2;
-    this.deliveryAddress.phoneNumber = address.phoneNumber;
+    // set to form
+    this.detailsForm.controls.FullName.setValue(address.fullName);
+    this.detailsForm.controls.PhoneNumber.setValue(address.phoneNumber);
+    this.detailsForm.controls.LocationId.setValue(address.location.locationId);
+    this.detailsForm.controls.AreaName.setValue(address.area.areaName);
+    this.onAddressTypeSelectionChange(address.addressType);
+    if (address.addressType.addressTypeId === '1') {
+      this.detailsForm.controls.DeliveryPoint.setValue(address.deliveryPoint.deliveryPointName);
+      this.detailsForm.controls.AddressLine1.setValue('');
+      this.detailsForm.controls.AddressLine2.setValue('');
+      this.detailsForm.controls.PinCode.setValue('');
+    } else  if (address.addressType.addressTypeId === '2') {
+      this.detailsForm.controls.AddressLine1.setValue(address.addressLine1);
+      this.detailsForm.controls.AddressLine2.setValue(address.addressLine2);
+      this.detailsForm.controls.PinCode.setValue(address.pincode);
+      this.detailsForm.controls.DeliveryPoint.setValue('');
+    }
+    this.deliveryAddress = address;
+    // this.deliveryAddress.fullName = address.fullName;
+    // this.deliveryAddress.addressLine1 = address.addressLine1;
+    // this.deliveryAddress.addressLine2 = address.addressLine2;
+    // this.deliveryAddress.phoneNumber = address.phoneNumber;
   }
   deleteDeliveryAddress(address) {
       // delete here
@@ -334,10 +358,18 @@ getSelectedCity(city: City) {
   }
   saveAddress() {
     this.deliveryAddress.fullName = this.detailsForm.value.FullName;
+    this.deliveryAddress.phoneNumber = this.detailsForm.value.PhoneNumber;
+    if (this.deliveryAddress.addressType.addressTypeId === '1') {
+      this.deliveryAddress.addressLine1 = null;
+      this.deliveryAddress.addressLine2 = null;
+      this.deliveryAddress.pincode = null;
+    } else if (this.deliveryAddress.addressType.addressTypeId === '2') {
     this.deliveryAddress.addressLine1 = this.detailsForm.value.AddressLine1;
     this.deliveryAddress.addressLine2 = this.detailsForm.value.AddressLine2;
-    this.deliveryAddress.phoneNumber = this.detailsForm.value.PhoneNumber;
     this.deliveryAddress.pincode = this.detailsForm.value.PinCode;
+    this.deliveryAddress.area.areaId = null;
+    this.deliveryAddress.area.areaName = null;
+    }
      // move the if else into response success
     if (this.action === 'add') {
       this.deliveryAddress.addressId = 0;
