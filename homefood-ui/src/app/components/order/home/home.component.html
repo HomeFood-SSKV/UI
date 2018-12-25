@@ -14,12 +14,12 @@
                   <!--  Menu Tabs Start  -->
                   <ul class="nav nav-tabs list-inline">
                       <li class="nav-item" *ngFor="let category of allMeals.supportedCategory;let i = index;">
-                          <a class="nav-link" href="javascript:void(0);" (click)="selectCategory(category.categoryId);">{{category.categoryName}}</a>
+                          <a class="nav-link" [ngClass]="{'active':(category.categoryId == selectedOptions.currentCategory)}" href="javascript:void(0);" (click)="selectCategory(category.categoryId);">{{category.categoryName}}</a>
                       </li>
                   </ul>
                   <ul class="nav nav-tabs list-inline">
                     <li class="nav-item" *ngFor="let dates of allMeals.supportedDates;let i = index;">
-                        <a class="nav-link" href="javascript:void(0);" (click)="selectDate(dates.dateId);">{{dates.date}}</a>
+                        <a class="nav-link" [ngClass]="{'active':(dates.dateId == selectedOptions.currentDate.dateId)}" href="javascript:void(0);" (click)="selectDate(dates.dateId);">{{dates.date}}</a>
                     </li>
                   </ul>
                   <!--  Menu Tabs End  -->
@@ -40,8 +40,8 @@
                                           <h4>{{product.foodName}} </h4>
                                           <span class="des">All</span>            
                                           <div class="price">{{product.price.price}}</div>
-                                          {{(product.discountPrice)}}
-                                          <div><input type="button" value="Add" (click)="addProduct(i);" /></div>
+                                          <div><input type="button" value="-" [disabled]="product.quantity == 1" (click)="updateQuantity(product, '-')"/><input type="text" [(ngModel)]="product.quantity" size="1"  /><input type="button" value="+" (click)="updateQuantity(product, '+')" /></div>
+                                          <div><input type="button" value="Add" (click)="addProduct(product);" /></div>
                                       </div>
                                   </div>
                                   <!-- Box End -->

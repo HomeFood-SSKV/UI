@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router }  from '@angular/router';
+import { Router } from '@angular/router';
 import { CartService } from '../../../services/cart.service';
 
 @Component({
@@ -13,23 +13,32 @@ export class ShoppingCartComponent implements OnInit {
   constructor(private router: Router, private cartService: CartService) { }
 
   ngOnInit() {
+    this.cartService.orderRequest.userId = 1;
     this.cartService.getCartData().subscribe(message => {
-        this.cartData = message;
-         console.log(message); 
-         this.cartData.forEach(element => {
-          console.log(element);
-          this.totalPrice = this.totalPrice + element.price;
-        });
-      });
-    this.cartData = this.cartService.getCardDataDetails();  
-    this.cartData.forEach(element => {
-      console.log(element);
-      this.totalPrice = this.totalPrice + element.price;
+      this.cartData = message;
+      this.updateTotalPrice();
     });
+    this.cartData = this.cartService.getCardDataDetails();
+    
   }
 
   public proceedToDetails() {
+    console.log(this.cartService.orderRequest);
     this.router.navigate(['order/deliverdetails']);
+  }
+
+  public updateTotalPrice() {
+    this.totalPrice = 0;
+    this.cartData.forEach(element => {
+      this.totalPrice = this.totalPrice + (parseFloat(element.quantity) * parseFloat(element.price));
+    });
+  }
+  public removeMeal(index){
+    console.log(index);
+    this.cartData.splice(index, 1);
+    this.cartService.orderRequest.foodDetails.splice(index, 1);
+    this.cartService.setCartDataDetails(this.cartData);
+    this.updateTotalPrice();
   }
 
 }

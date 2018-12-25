@@ -11,13 +11,17 @@ export class MealsPipe implements PipeTransform {
     if(!value) {
       return value;
     }  
+    const dateId = args.currentDate.dateId;
+    
     return value.filter(val => {
         checkData = false;
         if(val.categoryId == args.currentCategory){
           for(var j in args.currentDate.foodId){
             if(args.currentDate.foodId[j] == val.foodId) {
               checkData = true;
-              val.discountPrice = 70;
+              if(!val.quantity) {
+                val.quantity = 1;
+              }
             }
           }
         }

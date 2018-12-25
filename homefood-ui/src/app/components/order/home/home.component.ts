@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
     public currentCategory : any;
     public currentDate : any;
     public selectedOptions : any;
-    
+    public quantity = [];
 
   ngOnInit() {
     this.getAllMeals();
@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit {
         this.selectedOptions.currentCategory = mealsReponse.supportedCategory[0].categoryId;
         this.selectedOptions.currentDate = mealsReponse.availabilityMapping[0];
         this.allMeals = mealsReponse;
+        this.cartService.allMeals = mealsReponse;
         console.log(this.allMeals);
         
       }, error => {
@@ -59,7 +60,15 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['order/cart']);
   }
 
-  public addProduct(index){
-    this.cartService.setCartData(this.products[index]);
+  public addProduct(foodData){
+    this.cartService.setCartData(foodData, this.selectedOptions.currentDate.dateId);
+  }
+
+  public updateQuantity(foodData, type) {
+    if(type == '-' && foodData.quantity > 1) {
+      foodData.quantity = parseInt(foodData.quantity) - 1;
+    } else if(type == '+' && foodData.quantity) {
+      foodData.quantity = parseInt(foodData.quantity) + 1;
+    }
   }
 }
