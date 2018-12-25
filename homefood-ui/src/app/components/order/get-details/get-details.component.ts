@@ -56,7 +56,6 @@ export class GetDetailsComponent implements OnInit {
     private apiService: ApiService,
     private router: Router) { }
   ngOnInit() {
-    this.isShowForm = true; //  remove after development
     this.detailsForm = this.formBuilder.group({
       FullName: ['', Validators.required],
       LocationId: ['', Validators.required],
@@ -79,12 +78,15 @@ export class GetDetailsComponent implements OnInit {
     this.resetArea();
     let locId;
     locId = this.detailsForm.value.LocationId;
-    if (locId) {
+    if (locId !== '0') {
+      this.isLocationValid = true;
     for (let x = 0 ; x < this.allAddressResponse.area.length; x++) {
       if (this.allAddressResponse.area[x].locationId === locId) {
       this.supportedArea.push(this.allAddressResponse.area[x]);
       }
      }
+    } else if (locId === '0') {
+      this.isLocationValid = false;
     }
   }
   getSelectedlocation(locationId: number) {
@@ -125,6 +127,7 @@ export class GetDetailsComponent implements OnInit {
     this.detailsForm.controls.AreaName.setValue(area.areaName);
     this.deliveryAddress.area = area;
     this.filteredArea = [];
+    this.supportedDeliveryPoint = [];
      if (area.areaId) {
     for (let x = 0 ; x < this.allAddressResponse.deliveryPoint.length; x++) {
       if (this.allAddressResponse.deliveryPoint[x].areaId === area.areaId) {
@@ -154,6 +157,7 @@ export class GetDetailsComponent implements OnInit {
   getSelectedDeliveryPoint(deliveryPoint: DeliveryPoint) {
     this.detailsForm.controls.DeliveryPoint.setValue(deliveryPoint.deliveryPointName);
     this.deliveryAddress.deliveryPoint = deliveryPoint;
+    this.isDeliveryPointValid = true;
     this.filteredDeliveryPoint = [];
 }
 focusDeliveryPoint() {
@@ -232,7 +236,7 @@ getSelectedCity(city: City) {
   getDeliveryAddress() {
     const getAddressUrl = ADDRESS_URL_CONSTANT['GET'];
     this.apiService.getData(getAddressUrl).subscribe((response) => {
-      console.log(response);
+      console.log("response.data", response.data);
       this.allAddressResponse = response;
       this.allDeliveryAddress = response.data || [];
       this.addressType = response.addressType || [];
@@ -244,12 +248,13 @@ getSelectedCity(city: City) {
       this.supportedCity = response.city;
       this.supportedAddressType = response.addressType || [];
       this.refactorAddressTypeObject();
+      if (this.allDeliveryAddress.length === 0) {
+        this.isShowForm = true;
+      }
       console.log('post');
     });
-
-    if (this.allDeliveryAddress.length === 0) {
-      this.isShowForm = true;
-    }
+  }
+  displayAllDeliveryDetails(response: any) {
 
   }
   addLocationDefaultValue(locations: any) {
@@ -307,40 +312,54 @@ getSelectedCity(city: City) {
     return this.detailsForm.controls;
   }
   onSubmit() {
-    this.submitted = true;
-    // stop here if form is invalid
-    this.validateLocationFields();
-    this.validateDeliveryAddressFields();
-    if (this.detailsForm.invalid) {
+   this.submitted = true;
+   const a = this.validateLocationFields();
+   const b = this.validateDeliveryAddressFields();
+   const c = this.validateAddressLine1Fields();
+   // const d = this.validateAddressLine2Fields();
+   const e = this.validatePincodeFields();
+   if (this.deliveryAddress.addressType.addressTypeId === '1') {
+    if (this.detailsForm.invalid || a === false || b === false)  {
       return;
-    } else if (!this.detailsForm.invalid) {
-      this.deliveryAddress.fullName = this.detailsForm.value.FullName;
-      this.deliveryAddress.addressLine1 = this.detailsForm.value.AddressLine1;
-      this.deliveryAddress.addressLine2 = this.detailsForm.value.AddressLine2;
-      this.deliveryAddress.phoneNumber = this.detailsForm.value.PhoneNumber;
-       // move the if else into response success
-      if (this.action === 'add') {
-        this.deliveryAddress.addressId = 0;
-        this.isShowForm = false;
-        this.allDeliveryAddress.push(this.deliveryAddress);
-       } else if (this.action === 'update'
-             && this.deliveryAddress.addressId !== 0 ) {
-              for (let i = 0; i < this.allDeliveryAddress.length; i++) {
-                if (this.allDeliveryAddress[i].addressId === this.deliveryAddress.addressId) {
-                  this.allDeliveryAddress[i] = this.deliveryAddress;
-                  this.isShowForm = false;
-                  this.deliveryAddress = new DeliveryAddress();
-                }
-            }
-
+    } else if (!this.detailsForm.invalid && a && b) {
+      this.saveAddress();
     }
-      const url = 'https://st1.flysddas.com/translations/sasui-upsell/upsell_en.json';
-      this.apiService.postData(url, this.deliveryAddress).subscribe((response) => {
-        console.log(response);
-        this.proceedToPay(null);
-        console.log('post');
-      });
+  } else if (this.deliveryAddress.addressType.addressTypeId === '2') {
+    if (this.detailsForm.invalid || a === false || c === false  || e === false )  {
+      return;
+    } else if (!this.detailsForm.invalid && a && c && e) {
+      this.saveAddress();
+    }
   }
+  }
+  saveAddress() {
+    this.deliveryAddress.fullName = this.detailsForm.value.FullName;
+    this.deliveryAddress.addressLine1 = this.detailsForm.value.AddressLine1;
+    this.deliveryAddress.addressLine2 = this.detailsForm.value.AddressLine2;
+    this.deliveryAddress.phoneNumber = this.detailsForm.value.PhoneNumber;
+    this.deliveryAddress.pincode = this.detailsForm.value.PinCode;
+     // move the if else into response success
+    if (this.action === 'add') {
+      this.deliveryAddress.addressId = 0;
+      this.isShowForm = false;
+      this.allDeliveryAddress.push(this.deliveryAddress);
+     } else if (this.action === 'update'
+           && this.deliveryAddress.addressId !== 0 ) {
+            for (let i = 0; i < this.allDeliveryAddress.length; i++) {
+              if (this.allDeliveryAddress[i].addressId === this.deliveryAddress.addressId) {
+                this.allDeliveryAddress[i] = this.deliveryAddress;
+                this.isShowForm = false;
+                this.deliveryAddress = new DeliveryAddress();
+              }
+          }
+
+  }
+    const url = 'https://st1.flysddas.com/translations/sasui-upsell/upsell_en.json';
+    this.apiService.postData(url, this.deliveryAddress).subscribe((response) => {
+      console.log(response);
+      this.proceedToPay(null);
+      console.log('post');
+    });
   }
   validateDeliveryAddressFields() {
     if (this.detailsForm.value.DeliveryPoint !== '') {
@@ -357,6 +376,30 @@ getSelectedCity(city: City) {
       this.isLocationValid = false;
     }
     return this.isLocationValid;
+  }
+  validateAddressLine1Fields() {
+    if (this.detailsForm.value.AddressLine1 !== '') {
+      this.isAddressLine1Valid = true;
+    } else if (this.detailsForm.value.AddressLine1 === '') {
+      this.isAddressLine1Valid = false;
+    }
+    return this.isAddressLine1Valid;
+  }
+  validateAddressLine2Fields() {
+    if (this.detailsForm.value.AddressLine2 !== '') {
+      this.isAddressLine2Valid = true;
+    } else if (this.detailsForm.value.LocationId === '') {
+      this.isAddressLine2Valid = false;
+    }
+    return this.isAddressLine2Valid;
+  }
+  validatePincodeFields() {
+    if (this.detailsForm.value.PinCode !== '') {
+      this.isPincodeValid = true;
+    } else if (this.detailsForm.value.PinCode === '') {
+      this.isPincodeValid = false;
+    }
+    return this.isPincodeValid;
   }
   public proceedToPay(deliveryAddress: any) {
     console.log(deliveryAddress);

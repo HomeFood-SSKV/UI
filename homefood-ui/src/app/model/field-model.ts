@@ -30,7 +30,7 @@ export class Register {
     addressType: AddressType;
   }
   export class AddressType {
-    addressTypeId: number;
+    addressTypeId: string;
     addressTypeName: string;
   }
   export class DeliveryPoint {

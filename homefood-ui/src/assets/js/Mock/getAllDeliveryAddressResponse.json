@@ -81,14 +81,50 @@
             "addressId": "1",
             "fullName": "sivaraj A",
             "phoneNumber": "44456565566",
-            "areaId": "1",
-            "deliveryPointId" : "1",
+            "area": {
+                "areaId": "1",
+                "areaName": "Medavakam Global hospital"
+            },
+            "deliveryPoint" : {
+                "deliveryPointId": "1",
+                "deliveryPointName": "delivery point one"
+            },
+            "location": {
+                "locationId": "1",
+                "locationName": "Medavakkam"
+            },
+            "city": {
+                "cityId": "1",
+                "cityName": "Chennai"
+            },
+            "addressType": {
+                "addressTypeId": "1",
+                "addressTypeName": "Our Delivery Point"
+            }
+        },
+        {
+            "addressId": "2",
+            "fullName": "Kadhirvel S",
+            "phoneNumber": "65656565",
+            "area": {
+                "areaId": "3",
+                "areaName": "Hcl solinganullur"
+            },
             "addressLine1": "perumal koil street",
             "addressLine2": "second cross road",
-            "locationId": "1",
-            "cityId": "1",
+            "location": {
+                "locationId": "2",
+                "locationName": "solinganallur"    
+            },
+            "city": {
+                "cityId": "1",
+                "cityName": "Chennai"
+            },
             "pincode": "600112",
-            "addressTypeId": "1"
+            "addressType": {
+                "addressTypeId": "2",
+                "addressTypeName": "Others(Home/Office) Address"
+            }
         }
     ]
 }

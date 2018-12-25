@@ -6,16 +6,17 @@
                     <div *ngFor="let address of allDeliveryAddress" >
                             <h3> Delivery Address</h3>
                             <div>
-                            {{address.fullName}}, 
-                            {{address.areaName}}, <br>
-                            {{address.addressLine1}}, 
-                            {{address.addressLine2}}, <br>
-                            {{address.city}}, 
-                            {{address.state}}, <br>
-                            {{address.addressType}},
-                            {{address.country}}, <br>
-                            {{address.pinCode}}, <br>
-                            {{address.phoneNumber}}
+                            {{address.fullName ? address.fullName : ''}}, 
+                            {{address.phoneNumber ? address.phoneNumber : ''}},<br>
+                            {{address.location && address.location.locationName ? address.location.locationName : ''}}, <br>
+                            {{address.area && address.area.areaName ? address.area.areaName: ''}}, <br>
+                            {{address.addressType && address.addressType.addressTypeName ? address.addressType.addressTypeName: ''}}, <br>
+                            {{ address.deliveryPoint && address.deliveryPoint.deliveryPointName ? address.deliveryPoint.deliveryPointName:''}},  <br>
+                            {{address.addressLine1 ? address.addressLine1 : ''}}, 
+                            {{address.addressLine2 ? address.addressLine2 : ''}}, <br> 
+                            {{address.city && address.city.cityName ? address.city.cityName : ''}}, 
+                             {{address.pinCode ? address.pinCode: ''}}, <br> 
+                           
                               <br>
                               <div id="{{'ele'+address.id}}" class="form-group">
                                     <button class="btn btn-primary" (click)="proceedToPay(address)">Deliver to this address</button>
@@ -111,9 +112,11 @@
                     <div class="form-group" *ngIf="isShowOtherAddress   ">
                         <label>Address Line1:</label>
                         <input type="text" formControlName="AddressLine1"
-                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AddressLine1.errors }" />
-                        <div *ngIf="submitted && f.AddressLine1.errors" class="invalid-feedback">
-                            <div *ngIf="f.AddressLine1.errors.required">Adress line is required</div>
+                         class="form-control"
+                         (blur)="validateAddressLine1Fields();"
+                          [ngClass]="{ 'is-invalid': submitted && isAddressLine1Required && !isAddressLine1Valid}" />
+                        <div *ngIf="submitted && isAddressLine1Required && !isAddressLine1Valid" class="invalid-feedback">
+                            <div>Address line1 is required</div>
                         </div>
                     </div>
                     <div class="form-group" *ngIf="isShowOtherAddress" >
@@ -125,9 +128,11 @@
                     <div class="form-group" *ngIf="isShowOtherAddress">
                         <label>Pin Code:</label>
                         <input type="text" formControlName="PinCode"
-                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PinCode.errors }" />
-                        <div *ngIf="submitted && f.PinCode.errors" class="invalid-feedback">
-                            <div *ngIf="f.PinCode.errors.required">Pin Code is required</div>
+                         class="form-control"
+                         (blur)="validatePincodeFields();"
+                        [ngClass]="{ 'is-invalid': submitted && isPincodeRequired && !isPincodeValid}" />
+                        <div *ngIf="submitted && isPincodeRequired && !isPincodeValid" class="invalid-feedback">
+                            <div>Pin Code is required</div>
                         </div>
                     </div> 
                     <div class="form-group">
