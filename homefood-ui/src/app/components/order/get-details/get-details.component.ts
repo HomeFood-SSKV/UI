@@ -52,20 +52,23 @@ export class GetDetailsComponent implements OnInit {
   isShowDeliveryPoint = false;
   isShowOtherAddress = false;
   isFormValid = false;
+  isFNFormatMatched = true;
+  isPhoneNumberFormatMatched  = true;
+  isPincodeFormatMatched = true;
   constructor(private formBuilder: FormBuilder,
     private apiService: ApiService,
     private router: Router) { }
   ngOnInit() {
     this.detailsForm = this.formBuilder.group({
-      FullName: ['', Validators.required],
+      FullName: ['', Validators.compose([Validators.required, Validators.pattern('[-._a-zA-Z\s ]+$')])],
       LocationId: ['', Validators.required],
       AreaName: ['', Validators.required],
       DeliveryPoint: [''],
       AddressLine1: [''],
       AddressLine2: [''],
       City: ['Chennai', Validators.required],
-      PinCode: [''],
-      PhoneNumber: ['', Validators.required]
+      PinCode: ['', Validators.pattern('[0-9]+')],
+      PhoneNumber: ['', Validators.compose([Validators.required, Validators.pattern('[0-9]+')])]
     });
 
     this.getDeliveryAddress();
@@ -432,6 +435,68 @@ getSelectedCity(city: City) {
       this.isPincodeValid = false;
     }
     return this.isPincodeValid;
+  }
+  nameBlur() {
+    if (this.detailsForm.controls.FullName.errors) {
+       if (this.detailsForm.controls.FullName.errors.pattern) {
+        this.isFNFormatMatched = false;
+      }
+    } else {
+      this.isFNFormatMatched = true;
+    }
+   if (this.detailsForm.controls.FullName.value.length === 0) {
+      this.isFNFormatMatched = true;
+    }
+  }
+  phoneNumberBlur() {
+    if (this.detailsForm.controls.PhoneNumber.errors) {
+       if (this.detailsForm.controls.PhoneNumber.errors.pattern) {
+        this.isPhoneNumberFormatMatched = false;
+        return ;
+      }
+    } else {
+      this.isPhoneNumberFormatMatched = true;
+    }
+    if (this.detailsForm.controls.PhoneNumber.value.length === 0
+      || this.detailsForm.controls.PhoneNumber.value.length === 10) {
+          this.isPhoneNumberFormatMatched = true;
+        } else if (this.detailsForm.controls.PhoneNumber.value.length < 10
+          || this.detailsForm.controls.PhoneNumber.value.length > 10) {
+          this.isPhoneNumberFormatMatched = false;
+          return ;
+        }
+        if (this.detailsForm.controls.PhoneNumber.value
+          && this.detailsForm.controls.PhoneNumber.value.length === 10
+          && (this.detailsForm.controls.PhoneNumber.value.charAt(0) === '9'
+          || this.detailsForm.controls.PhoneNumber.value.charAt(0) === '8'
+          || this.detailsForm.controls.PhoneNumber.value.charAt(0) === '7'
+          || this.detailsForm.controls.PhoneNumber.value.charAt(0) === '6')) {
+            this.isPhoneNumberFormatMatched = true;
+        } else  if (this.detailsForm.controls.PhoneNumber.value
+          && (this.detailsForm.controls.PhoneNumber.value.length === 0 || this.detailsForm.controls.PhoneNumber.value.length > 0 )) {
+          this.isPhoneNumberFormatMatched = false;
+          return ;
+        }
+  }
+  pincodeBlur() {
+    if (this.detailsForm.controls.PinCode.errors) {
+       if (this.detailsForm.controls.PinCode.errors.pattern) {
+        this.isPincodeFormatMatched = false;
+        return;
+      }
+    } else {
+      this.isPincodeFormatMatched = true;
+    }
+    if ( (this.detailsForm.controls.PinCode.value.length < 6
+        && this.detailsForm.controls.PinCode.value.length !== 0)
+        || this.detailsForm.controls.PinCode.value.length > 6) {
+        this.isPincodeFormatMatched = false;
+        return ;
+    }
+    if (this.detailsForm.controls.PinCode.value.length === 0
+      || this.detailsForm.controls.PinCode.value.length === 6) {
+      this.isPincodeFormatMatched = true;
+    }
   }
   public proceedToPay(deliveryAddress: any) {
     console.log(deliveryAddress);

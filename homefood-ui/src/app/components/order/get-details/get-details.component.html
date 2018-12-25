@@ -33,17 +33,27 @@
                     <div class="form-group">
                         <label>Full Name:</label>
                         <input type="text" formControlName="FullName" 
-                        class="form-control" [ngClass]="{ 'is-invalid': submitted && f.FullName.errors }" />
-                        <div *ngIf="submitted && f.FullName.errors" class="invalid-feedback">
-                            <div *ngIf="f.FullName.errors.required">Full Name is required</div>
+                        class="form-control"
+                        (blur)="nameBlur()"
+                        [ngClass]="{ 'is-invalid': ((submitted && f.FullName.errors) || !isFNFormatMatched) }" />
+                        <div *ngIf="submitted && f.FullName.errors && f.FullName.errors.required" class="invalid-feedback">
+                            <div>Full Name is required</div>
+                        </div>
+                        <div *ngIf="((submitted && f.FullName.errors && f.FullName.errors.pattern) || !isFNFormatMatched)" class="invalid-feedback">
+                            <div>Full Name is Invalid</div>
                         </div>
                     </div> 
                     <div class="form-group">
-                        <label>Phone Number:</label>
+                        <label>Mobile Number:</label>
                         <input type="text" formControlName="PhoneNumber"
-                         class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PhoneNumber.errors }" />
+                         class="form-control"
+                         (blur)="phoneNumberBlur()"
+                         [ngClass]="{ 'is-invalid': ((submitted && f.PhoneNumber.errors) || !isPhoneNumberFormatMatched) }" />
                         <div *ngIf="submitted && f.PhoneNumber.errors" class="invalid-feedback">
-                            <div *ngIf="f.PhoneNumber.errors.required">Phone Number is required</div>
+                            <div *ngIf="f.PhoneNumber.errors.required">Mobile Number is required</div>
+                        </div>
+                        <div *ngIf="((submitted && f.PhoneNumber.errors && f.PhoneNumber.errors.pattern) || !isPhoneNumberFormatMatched)" class="invalid-feedback">
+                            <div>Mobile Number is Invalid</div>
                         </div>
                     </div>
                     <div class="form-group"> 
@@ -129,10 +139,13 @@
                         <label>Pin Code:</label>
                         <input type="text" formControlName="PinCode"
                          class="form-control"
-                         (blur)="validatePincodeFields();"
-                        [ngClass]="{ 'is-invalid': submitted && isPincodeRequired && !isPincodeValid}" />
+                         (blur)="validatePincodeFields();pincodeBlur();"
+                        [ngClass]="{ 'is-invalid': ((submitted && isPincodeRequired && !isPincodeValid) || !isPincodeFormatMatched)}" />
                         <div *ngIf="submitted && isPincodeRequired && !isPincodeValid" class="invalid-feedback">
                             <div>Pin Code is required</div>
+                        </div>
+                        <div *ngIf="((submitted && f.PinCode.errors && f.PinCode.errors.pattern) || !isPincodeFormatMatched)" class="invalid-feedback">
+                            <div>Pin code is Invalid</div>
                         </div>
                     </div> 
                     <div class="form-group">
