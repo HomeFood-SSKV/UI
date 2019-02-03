@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
     public currentDate : any;
     public selectedOptions : any;
     public quantity = [];
+    public dateVal = new Date();
 
   ngOnInit() {
     this.getAllMeals();

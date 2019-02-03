@@ -518,7 +518,7 @@ header .logo img {
 ---------------------------------------------------------------------*/
 
 footer {
-    background: #d4d4d4;
+    background: #f1f1f1;
 }
 footer .inner {
     padding: 60px 0 60px;
@@ -820,14 +820,14 @@ footer .powered .social li a:hover i {
 .menu {
     position: relative;
     float: left;
-    background: #f5f5f5;
+    background: #fafafa;
     width: 100%;
 }
 .menu-inner {
   padding: 20px 0;
 }
 .page-title {
-    font-size: 45px;
+    font-size: 32px;
     font-family: 'Francois One', sans-serif;
     color: #6929da;
     line-height: 55px;
@@ -839,7 +839,7 @@ footer .powered .social li a:hover i {
 .menu .nav-tabs {
     background: #fff;
     border: 1px solid #e5e5e5;
-    margin: 0 auto 30px;
+    margin: 0 auto 10px;
     padding: 5px 10px;
     text-align: center;
 }
@@ -891,34 +891,141 @@ footer .powered .social li a:hover i {
 }
 .menu .box .caption {
     position: relative;
-    padding: 16px;
-    min-height: 100px;
+    padding: 10px;
+    min-height: 50px;
     float: left;
     margin: 0;
     background: #fff;
     width: 100%;
 }
 .menu .box .caption h4 {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: #6929da;
     margin: 0 0 4px;
 }
 .menu .box .caption .des {
-    font-size: 14px;
+    font-size: 12px;
     color: #555;
     margin: 0;
-    line-height: 20px;
+    line-height: 14px;
+    display: block;
 }
 .menu .box .caption span {
     color: #757575;
 }
 .menu .box .caption .price {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     color: #6929da;
     margin-top: 10px;
+    display: inline-block;
 }
+
+/* date selection */
+.date-select-wrap {
+    margin-bottom: 20px;
+    width: 100%;
+    display: block;
+    height: 40px;   
+    text-align: center;    
+}
+.week-switcher {
+    margin: 0;
+    padding: 0;
+    width: auto;    
+    height: 100%;
+    list-style: none;
+}
+.week-switcher li {
+    display: inline-block;
+    margin: 0 4px;
+    width: 42px;
+    height: 100%;
+    font-size: 12px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+.week-switcher li:hover {
+    color: #6929da;
+}
+.week-switcher li .date-wrap {
+    font-size: 16px;
+}
+.week-switcher li.date-selection.today {
+    color: #6929da;
+    font-weight: bold;
+}
+
+/* Cart add remove */
+
+.food-quantity-wrap {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;    
+    width: 100px;
+    height: 32px;
+    display: inline-block;
+    background: #efefef;
+    border: 1px solid #eee;
+    border-radius: 4px; 
+}
+.btn-food-add {
+    outline: transparent;
+    border: 0;
+    width: 100%;
+    height: 30px;
+    font-size: 14px;
+    display: block;
+    opacity: 1;
+    color: #6929da;
+    background: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;    
+}
+.btn-food-add:hover,
+.btn-food-add:focus{  
+    color: #fff;
+    background: #6929da;
+
+}
+.food-add-minus {
+    position:absolute;
+    top: 0;
+    visibility: hidden;
+    float: left;    
+    display: inline-block;
+    width: 100%;
+    z-index: 1;
+}
+.food-add,
+.food-minus,
+.food-quantity {
+    float: left;
+    margin: 0;
+    width: 33.33%;
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    border: 0;
+    outline: 0; 
+      
+}
+.food-add,
+.food-minus {
+    cursor: pointer; 
+    border-radius: 4px;
+}
+.food-add:hover,
+.food-minus:hover {
+    color: #fff;
+    background: #6929da;  
+}
+
+
 .menu .box:hover {
     -webkit-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.20);
     -moz-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.20);

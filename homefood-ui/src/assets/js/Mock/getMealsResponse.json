@@ -12,15 +12,38 @@
     "supportedDates": [
         {
             "dateId": "1",
-            "date": "05"
+            "date": "05",
+            "dateName": "Mon"
         },
         {
             "dateId": "2",
-            "date": "06"
+            "date": "06",
+            "dateName": "Tue"
         },
         {
             "dateId": "3",
-            "date": "07"
+            "date": "07",
+            "dateName": "Wed"
+        },
+        {
+            "dateId": "4",
+            "date": "08",
+            "dateName": "Thu"
+        },
+        {
+            "dateId": "5",
+            "date": "09",
+            "dateName": "Fri"
+        },
+        {
+            "dateId": "6",
+            "date": "10",
+            "dateName": "Sat"
+        },
+        {
+            "dateId": "7",
+            "date": "11",
+            "dateName": "Sun"
         }
     ],
     "supportedType": [
